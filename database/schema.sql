@@ -1,0 +1,127 @@
+CREATE TABLE Roles (
+    Id INT IDENTITY PRIMARY KEY,
+    Name NVARCHAR(50) NOT NULL UNIQUE,
+    CreatedDate DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    CreatedBy NVARCHAR(100) NULL,
+    ModifiedDate DATETIME2 NULL,
+    ModifiedBy NVARCHAR(100) NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE Users (
+    Id BIGINT IDENTITY PRIMARY KEY,
+    FullName NVARCHAR(120) NOT NULL,
+    Email NVARCHAR(180) NOT NULL UNIQUE,
+    PasswordHash NVARCHAR(400) NOT NULL,
+    Phone NVARCHAR(40) NULL,
+    IsActive BIT NOT NULL DEFAULT 1,
+    LastLoginDate DATETIME2 NULL,
+    CreatedDate DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    CreatedBy NVARCHAR(100) NULL,
+    ModifiedDate DATETIME2 NULL,
+    ModifiedBy NVARCHAR(100) NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE UserRoles (
+    UserId BIGINT NOT NULL,
+    RoleId INT NOT NULL,
+    PRIMARY KEY (UserId, RoleId),
+    CONSTRAINT FK_UserRoles_Users FOREIGN KEY (UserId) REFERENCES Users(Id),
+    CONSTRAINT FK_UserRoles_Roles FOREIGN KEY (RoleId) REFERENCES Roles(Id)
+);
+
+CREATE TABLE Categories (
+    Id INT IDENTITY PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Slug NVARCHAR(130) NOT NULL UNIQUE,
+    ParentCategoryId INT NULL,
+    SortOrder INT NOT NULL DEFAULT 0,
+    CONSTRAINT FK_Categories_Parent FOREIGN KEY (ParentCategoryId) REFERENCES Categories(Id),
+    CreatedDate DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    CreatedBy NVARCHAR(100) NULL,
+    ModifiedDate DATETIME2 NULL,
+    ModifiedBy NVARCHAR(100) NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE Listings (
+    Id BIGINT IDENTITY PRIMARY KEY,
+    Title NVARCHAR(180) NOT NULL,
+    Slug NVARCHAR(220) NOT NULL UNIQUE,
+    Description NVARCHAR(MAX) NOT NULL,
+    CategoryId INT NOT NULL,
+    Price DECIMAL(18,2) NULL,
+    CurrencyCode CHAR(3) NOT NULL DEFAULT 'BDT',
+    Location NVARCHAR(120) NULL,
+    Status NVARCHAR(20) NOT NULL DEFAULT 'Draft',
+    PublishedDate DATETIME2 NULL,
+    OwnerUserId BIGINT NULL,
+    CONSTRAINT FK_Listings_Category FOREIGN KEY (CategoryId) REFERENCES Categories(Id),
+    CONSTRAINT FK_Listings_Owner FOREIGN KEY (OwnerUserId) REFERENCES Users(Id),
+    CreatedDate DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    CreatedBy NVARCHAR(100) NULL,
+    ModifiedDate DATETIME2 NULL,
+    ModifiedBy NVARCHAR(100) NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE ListingImages (
+    Id BIGINT IDENTITY PRIMARY KEY,
+    ListingId BIGINT NOT NULL,
+    FileUrl NVARCHAR(500) NOT NULL,
+    AltText NVARCHAR(160) NULL,
+    IsPrimary BIT NOT NULL DEFAULT 0,
+    SortOrder INT NOT NULL DEFAULT 0,
+    CONSTRAINT FK_ListingImages_Listing FOREIGN KEY (ListingId) REFERENCES Listings(Id)
+);
+
+CREATE TABLE Pages (
+    Id BIGINT IDENTITY PRIMARY KEY,
+    Title NVARCHAR(180) NOT NULL,
+    Slug NVARCHAR(220) NOT NULL UNIQUE,
+    ContentHtml NVARCHAR(MAX) NOT NULL,
+    IsPublished BIT NOT NULL DEFAULT 0,
+    PublishedDate DATETIME2 NULL,
+    SeoTitle NVARCHAR(180) NULL,
+    SeoDescription NVARCHAR(320) NULL,
+    CreatedDate DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    CreatedBy NVARCHAR(100) NULL,
+    ModifiedDate DATETIME2 NULL,
+    ModifiedBy NVARCHAR(100) NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE ContactMessages (
+    Id BIGINT IDENTITY PRIMARY KEY,
+    Name NVARCHAR(120) NOT NULL,
+    Email NVARCHAR(180) NOT NULL,
+    Phone NVARCHAR(40) NULL,
+    Message NVARCHAR(2000) NOT NULL,
+    ListingId BIGINT NULL,
+    IsResolved BIT NOT NULL DEFAULT 0,
+    CONSTRAINT FK_ContactMessages_Listing FOREIGN KEY (ListingId) REFERENCES Listings(Id),
+    CreatedDate DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
+);
+
+CREATE TABLE SiteSettings (
+    Id INT IDENTITY PRIMARY KEY,
+    KeyName NVARCHAR(100) NOT NULL UNIQUE,
+    Value NVARCHAR(MAX) NOT NULL,
+    ModifiedDate DATETIME2 NULL,
+    ModifiedBy NVARCHAR(100) NULL
+);
+
+CREATE TABLE AuditLogs (
+    Id BIGINT IDENTITY PRIMARY KEY,
+    EntityName NVARCHAR(100) NOT NULL,
+    EntityId NVARCHAR(80) NOT NULL,
+    Action NVARCHAR(20) NOT NULL,
+    DataJson NVARCHAR(MAX) NULL,
+    ChangedBy NVARCHAR(120) NULL,
+    ChangedDate DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
+);
+
+CREATE INDEX IX_Listings_Category_Status ON Listings(CategoryId, Status);
+CREATE INDEX IX_Listings_PublishedDate ON Listings(PublishedDate DESC);
+CREATE INDEX IX_ContactMessages_CreatedDate ON ContactMessages(CreatedDate DESC);
