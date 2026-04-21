@@ -1,0 +1,25 @@
+@model HomeViewModel
+@{
+    ViewData["Title"] = "Home";
+}
+<section class="hero mb-4">
+    <h1 class="display-5 fw-bold">Shop smarter with a new OnlineBazar experience</h1>
+    <p class="lead">Modern UI, curated products, and secure checkout.</p>
+    <a class="btn btn-light btn-lg" asp-controller="Products" asp-action="Index">Browse Catalog</a>
+</section>
+<h2 class="h4 mb-3">Featured Products</h2>
+<div class="row g-3">
+@foreach (var item in Model.FeaturedProducts)
+{
+    <div class="col-md-4">
+        <div class="card product-card h-100">
+            <img class="card-img-top" src="@(item.ImageUrl ?? "https://placehold.co/600x350")" alt="@item.Name" />
+            <div class="card-body">
+                <h3 class="h5">@item.Name</h3>
+                <p class="text-muted">@item.Description</p>
+                <strong>$@item.Price</strong>
+            </div>
+        </div>
+    </div>
+}
+</div>
