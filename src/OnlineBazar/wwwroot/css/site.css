@@ -1,0 +1,6 @@
+:root { --primary:#5b3df5; --accent:#19c3ff; }
+body{background:#f8fafc;}
+.text-gradient{background:linear-gradient(45deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero{background:linear-gradient(135deg,#0f172a,#312e81);color:#fff;border-radius:1rem;padding:4rem 2rem;}
+.product-card{transition:transform .2s, box-shadow .2s;}
+.product-card:hover{transform:translateY(-5px);box-shadow:0 10px 24px rgba(0,0,0,.08);}
