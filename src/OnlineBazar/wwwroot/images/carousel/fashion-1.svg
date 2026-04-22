@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="650" viewBox="0 0 1600 650" role="img" aria-labelledby="title1 desc1">
+  <title id="title1">Spring Collection Banner</title>
+  <desc id="desc1">Fashion banner with modern clothing silhouettes in pink tones.</desc>
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2d1b69"/>
+      <stop offset="100%" stop-color="#ff5f9e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="650" fill="url(#bg1)"/>
+  <circle cx="1350" cy="120" r="210" fill="rgba(255,255,255,0.12)"/>
+  <circle cx="220" cy="540" r="180" fill="rgba(255,255,255,0.08)"/>
+  <g fill="#fff" opacity="0.9">
+    <path d="M430 520l20-120 55-45 55 45 20 120h-45l-10-75h-60l-10 75z"/>
+    <path d="M760 520l18-115 48-38 48 38 18 115h-40l-8-66h-36l-8 66z"/>
+    <path d="M1020 520l24-125 62-50 62 50 24 125h-50l-12-80h-48l-12 80z"/>
+  </g>
+  <text x="130" y="200" fill="#ffffff" font-size="70" font-family="'Segoe UI', Arial, sans-serif" font-weight="700">Spring Fashion Edit</text>
+  <text x="130" y="265" fill="#ffe8f1" font-size="32" font-family="'Segoe UI', Arial, sans-serif">Fresh styles, confident looks, and premium comfort.</text>
+</svg>
