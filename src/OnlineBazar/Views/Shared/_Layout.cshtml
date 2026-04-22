@@ -15,36 +15,40 @@
             <a class="navbar-brand fw-bold text-gradient" asp-controller="Home" asp-action="Index">OnlineBazar</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="mainNav">
+                <form asp-controller="Products" asp-action="Index" method="get" class="d-flex my-3 my-lg-0 me-lg-3" role="search">
+                    <input class="form-control me-2" type="search" name="search" placeholder="Search products..." aria-label="Search products">
+                    <button class="btn btn-outline-dark" type="submit">Search</button>
+                </form>
                 <ul class="navbar-nav ms-auto gap-2 align-items-lg-center">
                     <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="Products" asp-action="Index">Products</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="About">About</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    @{
+                        var cartCount = User.Identity?.IsAuthenticated == true && User.IsInRole("Customer")
+                            ? CartService.GetCartItemCount()
+                            : 0;
+                    }
+                    <li class="nav-item">
+                        <a class="nav-icon-button position-relative" asp-controller="Cart" asp-action="Index" title="My Cart" aria-label="My Cart">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M3 4H5L7.1 14.4C7.28 15.25 8.02 15.86 8.9 15.86H17.7C18.54 15.86 19.27 15.3 19.5 14.49L21 9H8.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                                <circle cx="9.5" cy="19" r="1.5" fill="currentColor" />
+                                <circle cx="17.5" cy="19" r="1.5" fill="currentColor" />
+                            </svg>
+                            @if (cartCount > 0)
+                            {
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    @cartCount
+                                </span>
+                            }
+                        </a>
+                    </li>
 
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         var displayName = User.Identity?.Name ?? "User";
                         var avatarLetter = string.IsNullOrWhiteSpace(displayName) ? "U" : displayName[..1].ToUpperInvariant();
-
-                        @if (User.IsInRole("Customer"))
-                        {
-                            var cartCount = CartService.GetCartItemCount();
-                            <li class="nav-item">
-                                <a class="nav-icon-button position-relative" asp-controller="Cart" asp-action="Index" title="My Cart" aria-label="My Cart">
-                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                        <path d="M3 4H5L7.1 14.4C7.28 15.25 8.02 15.86 8.9 15.86H17.7C18.54 15.86 19.27 15.3 19.5 14.49L21 9H8.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                                        <circle cx="9.5" cy="19" r="1.5" fill="currentColor" />
-                                        <circle cx="17.5" cy="19" r="1.5" fill="currentColor" />
-                                    </svg>
-                                    @if (cartCount > 0)
-                                    {
-                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                            @cartCount
-                                        </span>
-                                    }
-                                </a>
-                            </li>
-                        }
 
                         <li class="nav-item dropdown">
                             <a class="profile-trigger dropdown-toggle"
