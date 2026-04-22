@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineBazar.DTOs;
 using OnlineBazar.Interfaces;
 
@@ -10,22 +11,32 @@ namespace OnlineBazar.Areas.Admin.Controllers;
 public class ProductsController : Controller
 {
     private readonly IProductService _productService;
+    private readonly ICategoryService _categoryService;
     private readonly IWebHostEnvironment _env;
 
-    public ProductsController(IProductService productService, IWebHostEnvironment env)
+    public ProductsController(IProductService productService, ICategoryService categoryService, IWebHostEnvironment env)
     {
         _productService = productService;
+        _categoryService = categoryService;
         _env = env;
     }
 
     public async Task<IActionResult> Index() => View(await _productService.GetCatalogAsync(null, null, 1, 100));
 
-    public IActionResult Create() => View(new ProductDto());
+    public async Task<IActionResult> Create()
+    {
+        await LoadCategoryOptionsAsync();
+        return View(new ProductDto());
+    }
 
     [HttpPost]
     public async Task<IActionResult> Create(ProductDto dto, IFormFile? image)
     {
-        if (!ModelState.IsValid) return View(dto);
+        if (!ModelState.IsValid)
+        {
+            await LoadCategoryOptionsAsync(dto.CategoryId);
+            return View(dto);
+        }
 
         if (image != null)
         {
@@ -43,13 +54,21 @@ public class ProductsController : Controller
     public async Task<IActionResult> Edit(int id)
     {
         var product = await _productService.GetByIdAsync(id);
-        return product is null ? NotFound() : View(product);
+        if (product is null) return NotFound();
+
+        await LoadCategoryOptionsAsync(product.CategoryId);
+        return View(product);
     }
 
     [HttpPost]
     public async Task<IActionResult> Edit(ProductDto dto)
     {
-        if (!ModelState.IsValid) return View(dto);
+        if (!ModelState.IsValid)
+        {
+            await LoadCategoryOptionsAsync(dto.CategoryId);
+            return View(dto);
+        }
+
         await _productService.UpdateAsync(dto);
         return RedirectToAction(nameof(Index));
     }
@@ -59,5 +78,13 @@ public class ProductsController : Controller
     {
         await _productService.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
+    }
+
+    private async Task LoadCategoryOptionsAsync(int? selectedCategoryId = null)
+    {
+        var categories = await _categoryService.GetAllAsync();
+        ViewBag.Categories = categories
+            .Select(c => new SelectListItem(c.Name, c.Id.ToString(), c.Id == selectedCategoryId))
+            .ToList();
     }
 }
