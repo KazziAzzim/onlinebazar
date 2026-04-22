@@ -17,7 +17,11 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public IActionResult Login() => View();
+    public IActionResult Login(string? returnUrl = null)
+    {
+        ViewData["ReturnUrl"] = returnUrl;
+        return View();
+    }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -27,7 +31,13 @@ public class AccountController : Controller
         if (!result.Succeeded)
         {
             ModelState.AddModelError(string.Empty, "Invalid credentials.");
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
+        }
+
+        if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+        {
+            return Redirect(returnUrl);
         }
 
         var user = await _userManager.FindByEmailAsync(email);
