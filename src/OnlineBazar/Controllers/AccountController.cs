@@ -25,7 +25,7 @@ public class AccountController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Login(string email, string password, string? returnUrl = null)
+    public async Task<IActionResult> Login(string email, string password)
     {
         var result = await _signInManager.PasswordSignInAsync(email, password, true, false);
         if (!result.Succeeded)

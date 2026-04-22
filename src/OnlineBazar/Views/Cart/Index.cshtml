@@ -1,61 +1,71 @@
-@model OnlineBazar.Models.Order?
+@model CartViewModel
 @{
     ViewData["Title"] = "My Cart";
-    var cartItems = Model?.Items.Where(i => !i.IsDeleted).ToList() ?? new List<OnlineBazar.Models.OrderItem>();
 }
 
-<div class="d-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0">My Cart</h1>
-    <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary">Continue Shopping</a>
-</div>
+<h1>My Cart</h1>
 
-@if (TempData["SuccessMessage"] is string successMessage)
+@if (TempData["CartMessage"] is string cartMessage)
 {
-    <div class="alert alert-success">@successMessage</div>
+    <div class="alert alert-success">@cartMessage</div>
 }
 
-@if (!cartItems.Any())
+@if (!Model.Items.Any())
 {
     <div class="alert alert-info">Your cart is empty.</div>
+    <a class="btn btn-dark" asp-controller="Products" asp-action="Index">Continue shopping</a>
 }
 else
 {
-    <div class="card border-0 shadow-sm">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Subtotal</th>
-                            <th class="text-end">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in cartItems)
-                        {
-                            <tr>
-                                <td>@(item.Product?.Name ?? "Unknown")</td>
-                                <td>$@item.UnitPrice</td>
-                                <td>@item.Quantity</td>
-                                <td>$@(item.UnitPrice * item.Quantity)</td>
-                                <td class="text-end">
-                                    <form asp-action="Remove" method="post" class="d-inline">
-                                        @Html.AntiForgeryToken()
-                                        <input type="hidden" name="itemId" value="@item.Id" />
-                                        <button class="btn btn-sm btn-outline-danger" type="submit">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="card-footer d-flex justify-content-end">
-            <strong>Total: $@Model!.TotalAmount</strong>
-        </div>
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th class="text-end">Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="@(item.ImageUrl ?? "https://placehold.co/80x80")" width="60" height="60" class="rounded object-fit-cover" alt="@item.ProductName" />
+                            <div>@item.ProductName</div>
+                        </div>
+                    </td>
+                    <td>$@item.UnitPrice</td>
+                    <td>
+                        <form asp-action="Update" method="post" class="d-flex gap-2 align-items-center">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+                            <button type="submit" name="quantity" value="@(item.Quantity - 1)" class="btn btn-outline-secondary btn-sm">-</button>
+                            <span>@item.Quantity</span>
+                            <button type="submit" name="quantity" value="@(item.Quantity + 1)" class="btn btn-outline-secondary btn-sm">+</button>
+                        </form>
+                    </td>
+                    <td class="text-end">$@item.LineTotal</td>
+                    <td class="text-end">
+                        <form asp-action="Remove" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3">Subtotal (@Model.TotalItems items)</th>
+                    <th class="text-end">$@Model.Subtotal</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
     </div>
 }
