@@ -95,9 +95,7 @@
             });
 
             submenu.addEventListener('hidden.bs.collapse', function () {
-                if (!submenu.querySelector('.admin-link.active')) {
-                    button.classList.remove('active');
-                }
+                button.classList.remove('active');
                 button.setAttribute('aria-expanded', 'false');
             });
         });
