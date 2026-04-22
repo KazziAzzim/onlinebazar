@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/src/OnlineBazar/.vs
+/src/OnlineBazar/bin/Debug/net8.0
+/src/OnlineBazar/obj
