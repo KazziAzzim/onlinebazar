@@ -7,10 +7,12 @@ namespace OnlineBazar.Controllers;
 public class AccountController : Controller
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public AccountController(SignInManager<ApplicationUser> signInManager)
+    public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
     {
         _signInManager = signInManager;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -24,6 +26,17 @@ public class AccountController : Controller
         {
             ModelState.AddModelError(string.Empty, "Invalid credentials.");
             return View();
+        }
+
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user is not null)
+        {
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            var isManager = await _userManager.IsInRoleAsync(user, "Manager");
+            if (isAdmin || isManager)
+            {
+                return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+            }
         }
 
         return RedirectToAction("Index", "Home");
