@@ -5,7 +5,12 @@
     <div class="col-md-6"><label>Slug</label><input asp-for="Slug" class="form-control" /></div>
     <div class="col-md-4"><label>Price</label><input asp-for="Price" class="form-control" /></div>
     <div class="col-md-4"><label>Stock</label><input asp-for="StockQuantity" class="form-control" /></div>
-    <div class="col-md-4"><label>Category Id</label><input asp-for="CategoryId" class="form-control" /></div>
+    <div class="col-md-4">
+        <label>Category</label>
+        <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select">
+            <option value="">Select a category</option>
+        </select>
+    </div>
     <div class="col-12"><label>Description</label><textarea asp-for="Description" class="form-control"></textarea></div>
     <div class="col-12"><label>Image</label><input type="file" class="form-control" name="image" /></div>
     <div class="col-12"><button class="btn btn-primary">Save</button></div>

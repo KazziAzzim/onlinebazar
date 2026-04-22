@@ -1,0 +1,8 @@
+@model CategoryDto
+<h1>Create Category</h1>
+<form method="post" class="row g-3">
+    <div class="col-md-6"><label>Name</label><input asp-for="Name" class="form-control" /></div>
+    <div class="col-md-6"><label>Slug</label><input asp-for="Slug" class="form-control" /></div>
+    <div class="col-12"><label>Description</label><textarea asp-for="Description" class="form-control"></textarea></div>
+    <div class="col-12"><button class="btn btn-primary">Save</button></div>
+</form>
