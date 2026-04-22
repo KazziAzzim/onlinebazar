@@ -4,3 +4,14 @@ body{background:#f8fafc;}
 .hero{background:linear-gradient(135deg,#0f172a,#312e81);color:#fff;border-radius:1rem;padding:4rem 2rem;}
 .product-card{transition:transform .2s, box-shadow .2s;}
 .product-card:hover{transform:translateY(-5px);box-shadow:0 10px 24px rgba(0,0,0,.08);}
+
+.carousel-item img{height:min(60vw,520px);object-fit:cover;}
+.carousel-control-prev,.carousel-control-next{width:8%;}
+.carousel-indicators [data-bs-target]{width:2.25rem;}
+
+.admin-shell{min-height:100vh;}
+.admin-sidebar{background:linear-gradient(180deg,#0f172a,#1e293b);color:#fff;min-height:100vh;box-shadow:4px 0 16px rgba(15,23,42,.15);}
+.admin-nav .admin-link{display:block;color:#dbeafe;text-decoration:none;padding:.7rem .9rem;border-radius:.6rem;font-weight:500;transition:all .2s ease;}
+.admin-nav .admin-link:hover{background:rgba(255,255,255,.12);color:#fff;transform:translateX(2px);}
+.admin-nav .admin-link.active{background:linear-gradient(45deg,var(--primary),var(--accent));color:#fff;box-shadow:0 8px 18px rgba(25,195,255,.25);}
+.admin-content{background:#f8fafc;}
