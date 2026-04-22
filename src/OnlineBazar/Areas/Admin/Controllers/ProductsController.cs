@@ -40,11 +40,29 @@ public class ProductsController : Controller
 
         if (image != null)
         {
-            var fileName = $"{Guid.NewGuid()}_{image.FileName}";
-            var path = Path.Combine(_env.WebRootPath, "uploads", fileName);
-            using var stream = System.IO.File.Create(path);
-            await image.CopyToAsync(stream);
-            dto.ImageUrl = $"/uploads/{fileName}";
+            var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            var uploadsDir = Path.Combine(webRoot, "uploads");
+
+            if (!Directory.Exists(uploadsDir))
+            {
+                Directory.CreateDirectory(uploadsDir);
+            }
+
+            var fileName = $"{Guid.NewGuid()}_{Path.GetFileName(image.FileName)}";
+            var path = Path.Combine(uploadsDir, fileName);
+
+            try
+            {
+                await using var stream = System.IO.File.Create(path);
+                await image.CopyToAsync(stream);
+                dto.ImageUrl = $"/uploads/{fileName}";
+            }
+            catch
+            {
+                ModelState.AddModelError(string.Empty, "Unable to save the image. Please try again.");
+                await LoadCategoryOptionsAsync(dto.CategoryId);
+                return View(dto);
+            }
         }
 
         await _productService.CreateAsync(dto);
