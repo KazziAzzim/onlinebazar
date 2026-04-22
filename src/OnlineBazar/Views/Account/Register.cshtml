@@ -1,0 +1,32 @@
+@model OnlineBazar.ViewModels.RegisterViewModel
+@{ ViewData["Title"] = "Register"; }
+<h1>Create account</h1>
+<form method="post" class="row g-3 col-md-6">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div>
+        <label asp-for="FullName"></label>
+        <input class="form-control" asp-for="FullName" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="Email"></label>
+        <input class="form-control" asp-for="Email" type="email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="Password"></label>
+        <input class="form-control" asp-for="Password" type="password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="ConfirmPassword"></label>
+        <input class="form-control" asp-for="ConfirmPassword" type="password" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <div class="d-flex gap-2 align-items-center">
+        <button class="btn btn-dark" type="submit">Register</button>
+        <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Login">Back to login</a>
+    </div>
+</form>
+
