@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="650" viewBox="0 0 1600 650" role="img" aria-labelledby="title3 desc3">
+  <title id="title3">Classic Essentials Banner</title>
+  <desc id="desc3">Elegant neutral fashion clothing collection promotion artwork.</desc>
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="100%" stop-color="#a16207"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="650" fill="url(#bg3)"/>
+  <rect x="0" y="450" width="1600" height="200" fill="rgba(255,255,255,0.06)"/>
+  <g fill="#fff" opacity="0.92">
+    <path d="M490 520l22-130 50-40 50 40 22 130h-46l-10-70h-40l-10 70z"/>
+    <path d="M810 520l26-150 58-46 58 46 26 150h-54l-12-80h-36l-12 80z"/>
+    <path d="M1140 520l20-120 46-36 46 36 20 120h-42l-8-60h-32l-8 60z"/>
+  </g>
+  <text x="120" y="200" fill="#ffffff" font-size="68" font-family="'Segoe UI', Arial, sans-serif" font-weight="700">Classic Essentials</text>
+  <text x="120" y="262" fill="#fef3c7" font-size="32" font-family="'Segoe UI', Arial, sans-serif">Timeless shirts, elevated basics, and everyday elegance.</text>
+</svg>

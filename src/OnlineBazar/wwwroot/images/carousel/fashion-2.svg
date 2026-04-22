@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="650" viewBox="0 0 1600 650" role="img" aria-labelledby="title2 desc2">
+  <title id="title2">Urban Streetwear Banner</title>
+  <desc id="desc2">Streetwear fashion styles with blue and orange accent design.</desc>
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="650" fill="url(#bg2)"/>
+  <rect x="980" y="0" width="620" height="650" fill="rgba(249,115,22,0.24)"/>
+  <g fill="#f8fafc" opacity="0.95">
+    <path d="M370 520l28-160 58-45 58 45 28 160h-58l-12-78h-32l-12 78z"/>
+    <path d="M680 520l24-145 52-40 52 40 24 145h-50l-10-72h-32l-10 72z"/>
+    <path d="M1240 520l30-170 64-50 64 50 30 170h-64l-14-86h-32l-14 86z"/>
+  </g>
+  <text x="120" y="190" fill="#ffffff" font-size="68" font-family="'Segoe UI', Arial, sans-serif" font-weight="700">Urban Streetwear Drop</text>
+  <text x="120" y="252" fill="#dbeafe" font-size="32" font-family="'Segoe UI', Arial, sans-serif">Trend-forward jackets, denim, hoodies, and everyday fits.</text>
+</svg>
