@@ -6,6 +6,12 @@
         <h1>@Model.Name</h1>
         <p>@Model.Description</p>
         <p class="h4">$@Model.Price</p>
-        <button class="btn btn-dark">Add to Cart</button>
+
+        <form asp-controller="Cart" asp-action="Add" method="post" class="d-flex gap-2 align-items-center">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="productId" value="@Model.Id" />
+            <input type="number" name="quantity" min="1" value="1" class="form-control" style="max-width: 100px;" />
+            <button class="btn btn-dark" type="submit">Add to Cart</button>
+        </form>
     </div>
 </div>

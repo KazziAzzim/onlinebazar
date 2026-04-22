@@ -1,0 +1,61 @@
+@model OnlineBazar.Models.Order?
+@{
+    ViewData["Title"] = "My Cart";
+    var cartItems = Model?.Items.Where(i => !i.IsDeleted).ToList() ?? new List<OnlineBazar.Models.OrderItem>();
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0">My Cart</h1>
+    <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary">Continue Shopping</a>
+</div>
+
+@if (TempData["SuccessMessage"] is string successMessage)
+{
+    <div class="alert alert-success">@successMessage</div>
+}
+
+@if (!cartItems.Any())
+{
+    <div class="alert alert-info">Your cart is empty.</div>
+}
+else
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in cartItems)
+                        {
+                            <tr>
+                                <td>@(item.Product?.Name ?? "Unknown")</td>
+                                <td>$@item.UnitPrice</td>
+                                <td>@item.Quantity</td>
+                                <td>$@(item.UnitPrice * item.Quantity)</td>
+                                <td class="text-end">
+                                    <form asp-action="Remove" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="itemId" value="@item.Id" />
+                                        <button class="btn btn-sm btn-outline-danger" type="submit">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+            <strong>Total: $@Model!.TotalAmount</strong>
+        </div>
+    </div>
+}
