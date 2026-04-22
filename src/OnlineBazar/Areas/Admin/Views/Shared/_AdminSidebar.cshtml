@@ -5,6 +5,7 @@
     var isDashboard = currentController == "dashboard" || currentPath.Contains("/admin/dashboard");
     var isProducts = currentController == "products" || currentPath.Contains("/admin/products");
     var isCategories = currentController == "categories" || currentPath.Contains("/admin/categories");
+    var isCustomers = currentController == "customers" || currentPath.Contains("/admin/customers");
     var isCatalogOpen = isProducts || isCategories;
 }
 
@@ -19,8 +20,8 @@
         </button>
     </div>
 
-    <nav class="collapse d-md-block nav flex-column gap-2 admin-nav" id="adminSidebarNav">
-        <a class="admin-link @(isDashboard ? "active" : string.Empty)" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+    <nav class="collapse d-md-block nav flex-column admin-nav" id="adminSidebarNav">
+        <a class="admin-link @(isDashboard ? "active" : string.Empty)" data-nav-match="exact" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
             <i class="bi bi-grid-1x2-fill me-2"></i>
             Dashboard
         </a>
@@ -45,5 +46,10 @@
                 Categories
             </a>
         </div>
+
+        <a class="admin-link @(isCustomers ? "active" : string.Empty)" asp-area="Admin" asp-controller="Customers" asp-action="Index">
+            <i class="bi bi-people me-2"></i>
+            Customers
+        </a>
     </nav>
 </aside>
