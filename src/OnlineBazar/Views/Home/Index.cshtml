@@ -2,7 +2,22 @@
 @{
     ViewData["Title"] = "Home";
     var carouselProducts = Model.CarouselProducts.ToList();
+    var placeholderImage = "https://placehold.co/600x400?text=No+Image";
 }
+
+<section class="home-search-bar card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <form asp-controller="Products" asp-action="Index" method="get" class="row g-2 align-items-center">
+            <div class="col-12 col-md-9">
+                <label for="homeSearch" class="form-label mb-1 fw-semibold">Search products</label>
+                <input id="homeSearch" name="search" type="text" class="form-control" placeholder="Search by product name..." />
+            </div>
+            <div class="col-12 col-md-3 d-grid align-self-end">
+                <button type="submit" class="btn btn-dark">Search</button>
+            </div>
+        </form>
+    </div>
+</section>
 
 @if (carouselProducts.Any())
 {
@@ -44,10 +59,13 @@
 {
     <div class="col-md-4">
         <div class="card product-card h-100">
-            <img class="card-img-top" src="@(item.ImageUrl ?? "https://placehold.co/600x350")" alt="@item.Name" />
+            <img class="card-img-top product-card-image"
+                 src="@(item.ImageUrl ?? placeholderImage)"
+                 alt="@item.Name"
+                 onerror="this.onerror=null;this.src='@placeholderImage';" />
             <div class="card-body d-flex flex-column">
-                <h3 class="h5">@item.Name</h3>
-                <p class="text-muted">@(item.Description ?? "No description")</p>
+                <h3 class="h5 product-card-title">@item.Name</h3>
+                <p class="text-muted product-card-description">@(item.Description ?? "No description")</p>
                 <div class="mt-auto d-flex justify-content-between align-items-center">
                     <strong>$@item.Price</strong>
                     <div class="d-flex gap-2">
@@ -83,10 +101,13 @@
             {
                 <div class="col-md-3">
                     <div class="card product-card h-100">
-                        <img class="card-img-top" src="@(item.ImageUrl ?? "https://placehold.co/500x300")" alt="@item.Name" />
+                        <img class="card-img-top product-card-image"
+                             src="@(item.ImageUrl ?? placeholderImage)"
+                             alt="@item.Name"
+                             onerror="this.onerror=null;this.src='@placeholderImage';" />
                         <div class="card-body d-flex flex-column">
-                            <h3 class="h6">@item.Name</h3>
-                            <p class="text-muted small">@(item.Description ?? "No description")</p>
+                            <h3 class="h6 product-card-title">@item.Name</h3>
+                            <p class="text-muted small product-card-description">@(item.Description ?? "No description")</p>
                             <div class="mt-auto d-flex justify-content-between align-items-center">
                                 <strong>$@item.Price</strong>
                                 <div class="d-flex gap-2">
