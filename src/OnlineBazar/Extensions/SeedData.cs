@@ -55,16 +55,230 @@ public static class SeedData
         if (!db.Products.Any())
         {
             var electronics = await db.Categories.FirstAsync(c => c.Slug == "electronics");
-            db.Products.Add(new Product
-            {
-                Name = "Noise Cancelling Headphones",
-                Slug = "noise-cancelling-headphones",
-                Description = "Premium wireless headphones.",
-                Price = 199.99m,
-                StockQuantity = 100,
-                CategoryId = electronics.Id,
-                IsFeatured = true
-            });
+            var fashion = await db.Categories.FirstAsync(c => c.Slug == "fashion");
+
+            db.Products.AddRange(
+                new Product
+                {
+                    Name = "Noise Cancelling Headphones",
+                    Slug = "noise-cancelling-headphones",
+                    Description = "Premium wireless headphones with immersive sound.",
+                    Price = 199.99m,
+                    StockQuantity = 100,
+                    CategoryId = electronics.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = true
+                },
+                new Product
+                {
+                    Name = "4K Ultra HD Smart TV",
+                    Slug = "4k-ultra-hd-smart-tv",
+                    Description = "55-inch smart TV with vibrant colors and streaming apps.",
+                    Price = 549.00m,
+                    StockQuantity = 35,
+                    CategoryId = electronics.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = true
+                },
+                new Product
+                {
+                    Name = "Gaming Laptop Pro 15",
+                    Slug = "gaming-laptop-pro-15",
+                    Description = "High-performance laptop designed for gaming and creators.",
+                    Price = 1299.00m,
+                    StockQuantity = 20,
+                    CategoryId = electronics.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1517336714739-489689fd1ca8?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = true
+                },
+                new Product
+                {
+                    Name = "Wireless Mechanical Keyboard",
+                    Slug = "wireless-mechanical-keyboard",
+                    Description = "Compact keyboard with tactile switches and RGB backlight.",
+                    Price = 119.50m,
+                    StockQuantity = 75,
+                    CategoryId = electronics.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = false
+                },
+                new Product
+                {
+                    Name = "Ergonomic Wireless Mouse",
+                    Slug = "ergonomic-wireless-mouse",
+                    Description = "Silent-click mouse with adjustable DPI and long battery life.",
+                    Price = 39.99m,
+                    StockQuantity = 150,
+                    CategoryId = electronics.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = false
+                },
+                new Product
+                {
+                    Name = "Smart Fitness Watch",
+                    Slug = "smart-fitness-watch",
+                    Description = "Track heart rate, workouts, and notifications on the go.",
+                    Price = 179.00m,
+                    StockQuantity = 80,
+                    CategoryId = electronics.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = true
+                },
+                new Product
+                {
+                    Name = "Portable Bluetooth Speaker",
+                    Slug = "portable-bluetooth-speaker",
+                    Description = "Water-resistant speaker with deep bass and all-day battery.",
+                    Price = 69.00m,
+                    StockQuantity = 120,
+                    CategoryId = electronics.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1589003077984-894e133dabab?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = false
+                },
+                new Product
+                {
+                    Name = "Mirrorless Camera Kit",
+                    Slug = "mirrorless-camera-kit",
+                    Description = "24MP mirrorless camera with interchangeable lens system.",
+                    Price = 899.00m,
+                    StockQuantity = 18,
+                    CategoryId = electronics.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = true
+                },
+                new Product
+                {
+                    Name = "Wireless Earbuds",
+                    Slug = "wireless-earbuds",
+                    Description = "True wireless earbuds with active noise cancellation.",
+                    Price = 89.99m,
+                    StockQuantity = 140,
+                    CategoryId = electronics.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1606220838315-056192d5e927?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = false
+                },
+                new Product
+                {
+                    Name = "USB-C Fast Charger",
+                    Slug = "usb-c-fast-charger",
+                    Description = "65W compact charger for phones, tablets, and laptops.",
+                    Price = 29.99m,
+                    StockQuantity = 200,
+                    CategoryId = electronics.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1615526675159-e248f522d6c0?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = false
+                },
+                new Product
+                {
+                    Name = "Classic Denim Jacket",
+                    Slug = "classic-denim-jacket",
+                    Description = "Timeless denim jacket with a modern slim fit.",
+                    Price = 74.99m,
+                    StockQuantity = 90,
+                    CategoryId = fashion.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = true
+                },
+                new Product
+                {
+                    Name = "Men's Casual Sneakers",
+                    Slug = "mens-casual-sneakers",
+                    Description = "Comfortable everyday sneakers with breathable mesh.",
+                    Price = 64.00m,
+                    StockQuantity = 110,
+                    CategoryId = fashion.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = true
+                },
+                new Product
+                {
+                    Name = "Women's Running Shoes",
+                    Slug = "womens-running-shoes",
+                    Description = "Lightweight running shoes built for speed and comfort.",
+                    Price = 89.00m,
+                    StockQuantity = 95,
+                    CategoryId = fashion.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = true
+                },
+                new Product
+                {
+                    Name = "Cotton Crew Neck T-Shirt",
+                    Slug = "cotton-crew-neck-tshirt",
+                    Description = "Soft premium cotton t-shirt for daily wear.",
+                    Price = 19.99m,
+                    StockQuantity = 220,
+                    CategoryId = fashion.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = false
+                },
+                new Product
+                {
+                    Name = "Slim Fit Chino Pants",
+                    Slug = "slim-fit-chino-pants",
+                    Description = "Versatile chinos suitable for office or weekend style.",
+                    Price = 49.99m,
+                    StockQuantity = 140,
+                    CategoryId = fashion.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = false
+                },
+                new Product
+                {
+                    Name = "Leather Crossbody Bag",
+                    Slug = "leather-crossbody-bag",
+                    Description = "Elegant and practical leather bag with adjustable strap.",
+                    Price = 109.00m,
+                    StockQuantity = 60,
+                    CategoryId = fashion.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = false
+                },
+                new Product
+                {
+                    Name = "Polarized Sunglasses",
+                    Slug = "polarized-sunglasses",
+                    Description = "UV-protective sunglasses with lightweight frame.",
+                    Price = 34.99m,
+                    StockQuantity = 180,
+                    CategoryId = fashion.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = false
+                },
+                new Product
+                {
+                    Name = "Wool Blend Winter Coat",
+                    Slug = "wool-blend-winter-coat",
+                    Description = "Warm tailored coat for a polished winter look.",
+                    Price = 149.00m,
+                    StockQuantity = 45,
+                    CategoryId = fashion.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = true
+                },
+                new Product
+                {
+                    Name = "Women's Floral Dress",
+                    Slug = "womens-floral-dress",
+                    Description = "Flowy floral dress ideal for spring and summer outings.",
+                    Price = 59.00m,
+                    StockQuantity = 85,
+                    CategoryId = fashion.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = true
+                },
+                new Product
+                {
+                    Name = "Analog Leather Strap Watch",
+                    Slug = "analog-leather-strap-watch",
+                    Description = "Minimalist analog watch with genuine leather strap.",
+                    Price = 129.99m,
+                    StockQuantity = 70,
+                    CategoryId = fashion.Id,
+                    ImageUrl = "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=1200&q=80",
+                    IsFeatured = false
+                }
+            );
             await db.SaveChangesAsync();
         }
     }
