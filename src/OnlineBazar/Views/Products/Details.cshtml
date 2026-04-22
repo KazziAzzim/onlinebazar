@@ -6,6 +6,20 @@
         <h1>@Model.Name</h1>
         <p>@Model.Description</p>
         <p class="h4">$@Model.Price</p>
-        <button class="btn btn-dark">Add to Cart</button>
+        @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
+        {
+            <form asp-controller="Cart" asp-action="Add" method="post" class="d-flex gap-2 align-items-center">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="productId" value="@Model.Id" />
+                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                <label for="qtyInput" class="form-label mb-0">Qty</label>
+                <input id="qtyInput" name="quantity" type="number" min="1" value="1" class="form-control w-auto" />
+                <button class="btn btn-dark" type="submit">Add to Cart</button>
+            </form>
+        }
+        else
+        {
+            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-dark">Login as customer to add to cart</a>
+        }
     </div>
 </div>
