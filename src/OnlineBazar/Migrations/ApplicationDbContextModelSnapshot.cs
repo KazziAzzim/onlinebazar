@@ -263,7 +263,7 @@ namespace OnlineBazar.Migrations
                     b.HasIndex("Slug")
                         .IsUnique();
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBazar.Models.Order", b =>
@@ -308,7 +308,7 @@ namespace OnlineBazar.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBazar.Models.OrderItem", b =>
@@ -352,7 +352,7 @@ namespace OnlineBazar.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBazar.Models.Product", b =>
@@ -411,7 +411,7 @@ namespace OnlineBazar.Migrations
                     b.HasIndex("Slug")
                         .IsUnique();
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBazar.Models.SiteContent", b =>
@@ -447,7 +447,7 @@ namespace OnlineBazar.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SiteContents");
+                    b.ToTable("SiteContents", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
