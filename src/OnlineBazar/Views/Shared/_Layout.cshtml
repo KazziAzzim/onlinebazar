@@ -23,12 +23,19 @@
 
                     @if (User.Identity?.IsAuthenticated == true)
                     {
+                        var displayName = User.Identity?.Name ?? "User";
+                        var avatarLetter = string.IsNullOrWhiteSpace(displayName) ? "U" : displayName[..1].ToUpperInvariant();
+
                         @if (User.IsInRole("Customer"))
                         {
                             var cartCount = CartService.GetCartItemCount();
                             <li class="nav-item">
-                                <a class="btn btn-outline-dark position-relative" asp-controller="Cart" asp-action="Index">
-                                    Cart
+                                <a class="nav-icon-button position-relative" asp-controller="Cart" asp-action="Index" title="My Cart" aria-label="My Cart">
+                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M3 4H5L7.1 14.4C7.28 15.25 8.02 15.86 8.9 15.86H17.7C18.54 15.86 19.27 15.3 19.5 14.49L21 9H8.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="9.5" cy="19" r="1.5" fill="currentColor" />
+                                        <circle cx="17.5" cy="19" r="1.5" fill="currentColor" />
+                                    </svg>
                                     @if (cartCount > 0)
                                     {
                                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -39,24 +46,30 @@
                             </li>
                         }
 
-                        <li class="nav-item">
-                            <span class="nav-link text-muted">
-                                @User.Identity.Name
-                                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                                {
-                                    <span class="badge bg-dark ms-1">Admin</span>
-                                }
-                                else if (User.IsInRole("Customer"))
-                                {
-                                    <span class="badge bg-secondary ms-1">Customer</span>
-                                }
-                            </span>
-                        </li>
-                        <li class="nav-item">
-                            <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
-                                @Html.AntiForgeryToken()
-                                <button class="btn btn-outline-secondary" type="submit">Logout</button>
-                            </form>
+                        <li class="nav-item dropdown">
+                            <a class="profile-trigger dropdown-toggle"
+                               href="#"
+                               role="button"
+                                data-bs-toggle="dropdown"
+                               aria-expanded="false"
+                               title="User menu"
+                               aria-label="User menu">
+                                <span class="profile-avatar">@avatarLetter</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                <li><h6 class="dropdown-header">@displayName</h6></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile</a></li>
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="MyOrders">My Orders</a></li>
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">Change Password</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                                        @Html.AntiForgeryToken()
+                                        <button class="dropdown-item text-danger" type="submit">Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
                     }
                     else
