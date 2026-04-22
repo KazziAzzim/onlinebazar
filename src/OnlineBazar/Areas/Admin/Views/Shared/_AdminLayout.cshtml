@@ -58,9 +58,15 @@
 
         menuLinks.forEach(function (link) {
             var href = (link.getAttribute('href') || '').toLowerCase();
+            var matchMode = (link.dataset.navMatch || 'prefix').toLowerCase();
             if (!href || href === '#') return;
 
-            if (currentPath === href || (href !== '/' && currentPath.indexOf(href) === 0)) {
+            var isActive = currentPath === href;
+            if (!isActive && matchMode === 'prefix') {
+                isActive = href !== '/' && currentPath.indexOf(href + '/') === 0;
+            }
+
+            if (isActive) {
                 link.classList.add('active');
                 var collapseParent = link.closest('.collapse');
                 if (collapseParent) {
