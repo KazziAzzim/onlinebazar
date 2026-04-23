@@ -36,8 +36,121 @@ body{background:#f8fafc;}
   scroll-behavior:smooth;
 }
 .featured-product-card{
-  flex:0 0 240px;
-  min-width:240px;
+  flex:0 0 340px;
+  min-width:340px;
+  border-radius:.25rem;
+  border:1px solid #dfdfdf;
+  box-shadow:none;
+  overflow:hidden;
+  background:#fff;
+}
+
+.featured-product-image-wrap{
+  position:relative;
+  padding:1rem 1rem .2rem;
+}
+
+.featured-product-image{
+  height:420px;
+  object-fit:cover;
+  background:#f6f6f6;
+}
+
+.featured-product-discount{
+  position:absolute;
+  top:1.5rem;
+  left:1.5rem;
+  width:64px;
+  height:64px;
+  border-radius:999px;
+  background:#8e1830;
+  color:#fff;
+  font-weight:700;
+  font-size:1.75rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.featured-product-body{
+  padding:0 1rem 1rem;
+}
+
+.featured-product-title{
+  font-size:2rem;
+  line-height:1.35;
+  font-weight:600;
+  color:#2d2d2d;
+}
+
+.featured-product-category{
+  color:#9b9b9b;
+  font-size:1.5rem;
+}
+
+.featured-product-old-price{
+  color:#b1b1b1;
+  text-decoration:line-through;
+  font-size:1.35rem;
+}
+
+.featured-product-price{
+  color:#8e1830;
+  font-weight:700;
+  font-size:1.8rem;
+}
+
+.featured-product-cta{
+  border-radius:0;
+  border:none;
+  background:#8e1830;
+  color:#fff;
+  font-size:1.4rem;
+  font-weight:700;
+  padding:.85rem 1rem;
+}
+
+.featured-product-cta:hover,
+.featured-product-cta:focus{
+  background:#781428;
+  color:#fff;
+}
+
+@media (max-width: 767.98px){
+  .featured-product-card{
+    flex-basis:280px;
+    min-width:280px;
+  }
+
+  .featured-product-image{
+    height:320px;
+  }
+
+  .featured-product-title{
+    font-size:1.2rem;
+  }
+
+  .featured-product-category{
+    font-size:1rem;
+  }
+
+  .featured-product-price{
+    font-size:1.35rem;
+  }
+
+  .featured-product-old-price{
+    font-size:1rem;
+  }
+
+  .featured-product-discount{
+    width:58px;
+    height:58px;
+    font-size:1.25rem;
+  }
+
+  .featured-product-cta{
+    font-size:1rem;
+  }
 }
 
 .admin-shell{min-height:100vh;}
