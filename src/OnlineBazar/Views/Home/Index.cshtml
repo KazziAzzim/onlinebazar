@@ -45,6 +45,12 @@
         {
             var discountPercentage = 20 + (product.Id % 5) * 5;
             var originalPrice = Math.Round(product.Price / (1 - (discountPercentage / 100m)), 2);
+            var productDescription = string.IsNullOrWhiteSpace(product.Description) ? "Everyday Wear" : product.Description.Trim();
+            const int descriptionLimit = 80;
+            var isDescriptionTruncated = productDescription.Length > descriptionLimit;
+            var truncatedDescription = isDescriptionTruncated
+                ? $"{productDescription[..descriptionLimit].TrimEnd()}..."
+                : productDescription;
 
             <article class="card product-card featured-product-card h-100">
                 <div class="featured-product-image-wrap">
@@ -55,7 +61,16 @@
                 </div>
                 <div class="card-body featured-product-body d-flex flex-column">
                     <h3 class="h5 product-card-title featured-product-title">@product.Name</h3>
-                    <p class="featured-product-category mb-3">@(string.IsNullOrWhiteSpace(product.Description) ? "Everyday Wear" : product.Description)</p>
+                    <p class="featured-product-category mb-3">
+                        <span>@truncatedDescription</span>
+                        @if (isDescriptionTruncated)
+                        {
+                            <a asp-controller="Products"
+                               asp-action="Details"
+                               asp-route-id="@product.Id"
+                               class="featured-product-more-link ms-1">More</a>
+                        }
+                    </p>
 
                     <div class="mt-auto mb-3">
                         <span class="featured-product-old-price me-2">$@originalPrice.ToString("0.00")</span>
