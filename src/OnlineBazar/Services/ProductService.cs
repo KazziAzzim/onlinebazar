@@ -19,6 +19,16 @@ public class ProductService : IProductService
         return products.Cast<Product>().Select(MapToDto);
     }
 
+    public async Task<IEnumerable<ProductDto>> GetRandomProductsAsync(int count)
+    {
+        var products = (await _uow.Products.GetAllAsync(p => !p.IsDeleted))
+            .Cast<Product>()
+            .OrderBy(_ => Random.Shared.Next())
+            .Take(count);
+
+        return products.Select(MapToDto);
+    }
+
     public async Task<IEnumerable<ProductDto>> GetCatalogAsync(string? categorySlug, string? search, int page, int pageSize)
     {
         var products = (await _uow.Products.GetAllAsync(p => !p.IsDeleted)).Cast<Product>();

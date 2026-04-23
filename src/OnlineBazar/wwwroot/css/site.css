@@ -25,6 +25,21 @@ body{background:#f8fafc;}
 .carousel-control-prev,.carousel-control-next{width:8%;}
 .carousel-indicators [data-bs-target]{width:2.25rem;}
 
+.featured-products-row{
+  display:flex;
+  flex-wrap:nowrap;
+  gap:.75rem;
+  overflow-x:auto;
+  overflow-y:hidden;
+  justify-content:flex-start;
+  align-items:stretch;
+  scroll-behavior:smooth;
+}
+.featured-product-card{
+  flex:0 0 240px;
+  min-width:240px;
+}
+
 .admin-shell{min-height:100vh;}
 .admin-sidebar{background:linear-gradient(180deg,#0f172a,#1e293b);color:#fff;min-height:100vh;box-shadow:4px 0 16px rgba(15,23,42,.15);}
 .admin-nav{gap:.45rem;}
