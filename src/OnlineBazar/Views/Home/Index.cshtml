@@ -31,6 +31,73 @@
     </button>
 </section>
 
+
+<section class="mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h4 mb-0">Featured Products</h2>
+        <a asp-controller="Products" asp-action="Index" class="btn btn-outline-dark btn-sm d-inline-flex align-items-center gap-2">
+            <span>View More</span>
+            <span aria-hidden="true">&rarr;</span>
+        </a>
+    </div>
+
+    <div class="featured-products-row pb-2">
+        @foreach (var product in Model.FeaturedProducts)
+        {
+            var discountPercentage = 20 + (product.Id % 5) * 5;
+            var originalPrice = Math.Round(product.Price / (1 - (discountPercentage / 100m)), 2);
+            var productDescription = string.IsNullOrWhiteSpace(product.Description) ? "Everyday Wear" : product.Description.Trim();
+            const int descriptionLimit = 80;
+            var isDescriptionTruncated = productDescription.Length > descriptionLimit;
+            var truncatedDescription = isDescriptionTruncated
+                ? $"{productDescription[..descriptionLimit].TrimEnd()}..."
+                : productDescription;
+
+            <article class="card product-card featured-product-card h-100">
+                <div class="featured-product-image-wrap">
+                    <img src="@(string.IsNullOrWhiteSpace(product.ImageUrl) ? Url.Content("~/images/carousel/fashion-1.svg") : product.ImageUrl)"
+                         class="card-img-top product-card-image featured-product-image"
+                         alt="@product.Name" />
+                    <span class="featured-product-discount">-@discountPercentage%</span>
+                </div>
+                <div class="card-body featured-product-body d-flex flex-column">
+                    <h3 class="h5 product-card-title featured-product-title">@product.Name</h3>
+                    <p class="featured-product-category mb-3">
+                        <span>@truncatedDescription</span>
+                        @if (isDescriptionTruncated)
+                        {
+                            <a asp-controller="Products"
+                               asp-action="Details"
+                               asp-route-id="@product.Id"
+                               class="featured-product-more-link ms-1">More</a>
+                        }
+                    </p>
+
+                    <div class="mt-auto mb-3">
+                        <span class="featured-product-old-price me-2">$@originalPrice.ToString("0.00")</span>
+                        <span class="featured-product-price">$@product.Price.ToString("0.00")</span>
+                    </div>
+
+                    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
+                    {
+                        <form asp-controller="Cart" asp-action="Add" method="post" class="d-grid">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="productId" value="@product.Id" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                            <button type="submit" class="btn featured-product-cta">ADD TO CART</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn featured-product-cta">VIEW PRODUCT</a>
+                    }
+                </div>
+            </article>
+        }
+    </div>
+</section>
+
 <section class="mt-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="h4 mb-0">What Our Customers Say</h2>
@@ -109,101 +176,3 @@
     </script>
 }
 
-<section class="mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="h4 mb-0">Featured Products</h2>
-        <a asp-controller="Products" asp-action="Index" class="btn btn-outline-dark btn-sm d-inline-flex align-items-center gap-2">
-            <span>View More</span>
-            <span aria-hidden="true">&rarr;</span>
-        </a>
-    </div>
-
-    <div class="featured-products-row pb-2">
-        @foreach (var product in Model.FeaturedProducts)
-        {
-            var discountPercentage = 20 + (product.Id % 5) * 5;
-            var originalPrice = Math.Round(product.Price / (1 - (discountPercentage / 100m)), 2);
-            var productDescription = string.IsNullOrWhiteSpace(product.Description) ? "Everyday Wear" : product.Description.Trim();
-            const int descriptionLimit = 80;
-            var isDescriptionTruncated = productDescription.Length > descriptionLimit;
-            var truncatedDescription = isDescriptionTruncated
-                ? $"{productDescription[..descriptionLimit].TrimEnd()}..."
-                : productDescription;
-
-            <article class="card product-card featured-product-card h-100">
-                <div class="featured-product-image-wrap">
-                    <img src="@(string.IsNullOrWhiteSpace(product.ImageUrl) ? Url.Content("~/images/carousel/fashion-1.svg") : product.ImageUrl)"
-                         class="card-img-top product-card-image featured-product-image"
-                         alt="@product.Name" />
-                    <span class="featured-product-discount">-@discountPercentage%</span>
-                </div>
-                <div class="card-body featured-product-body d-flex flex-column">
-                    <h3 class="h5 product-card-title featured-product-title">@product.Name</h3>
-                    <p class="featured-product-category mb-3">
-                        <span>@truncatedDescription</span>
-                        @if (isDescriptionTruncated)
-                        {
-                            <a asp-controller="Products"
-                               asp-action="Details"
-                               asp-route-id="@product.Id"
-                               class="featured-product-more-link ms-1">More</a>
-                        }
-                    </p>
-
-                    <div class="mt-auto mb-3">
-                        <span class="featured-product-old-price me-2">$@originalPrice.ToString("0.00")</span>
-                        <span class="featured-product-price">$@product.Price.ToString("0.00")</span>
-                    </div>
-
-                    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
-                    {
-                        <form asp-controller="Cart" asp-action="Add" method="post" class="d-grid">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="productId" value="@product.Id" />
-                            <input type="hidden" name="quantity" value="1" />
-                            <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
-                            <button type="submit" class="btn featured-product-cta">ADD TO CART</button>
-                        </form>
-                    }
-                    else
-                    {
-                        <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn featured-product-cta">VIEW PRODUCT</a>
-                    }
-                </div>
-            </article>
-        }
-    </div>
-</section>
-
-<section class="mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="h4 mb-0">What Our Customers Say</h2>
-    </div>
-
-    <div class="row g-3">
-        <div class="col-12 col-md-6 col-lg-4">
-            <article class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <p class="mb-3 text-secondary">“Great quality and fast delivery. The checkout experience was smooth and simple.”</p>
-                    <h3 class="h6 mb-0">Ava Martinez</h3>
-                </div>
-            </article>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <article class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <p class="mb-3 text-secondary">“I found exactly what I needed at a fair price. Product images matched what arrived.”</p>
-                    <h3 class="h6 mb-0">Noah Johnson</h3>
-                </div>
-            </article>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <article class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <p class="mb-3 text-secondary">“Customer support was responsive and helpful. I’ll definitely shop here again.”</p>
-                    <h3 class="h6 mb-0">Sophia Lee</h3>
-                </div>
-            </article>
-        </div>
-    </div>
-</section>
