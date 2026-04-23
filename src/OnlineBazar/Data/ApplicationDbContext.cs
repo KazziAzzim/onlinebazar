@@ -13,6 +13,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
     public DbSet<SiteContent> SiteContents => Set<SiteContent>();
+    public DbSet<Testimonial> Testimonials => Set<Testimonial>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -49,6 +50,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 .WithMany(p => p.OrderItems)
                 .HasForeignKey(i => i.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        builder.Entity<Testimonial>(entity =>
+        {
+            entity.Property(t => t.CustomerName).HasMaxLength(120).IsRequired();
+            entity.Property(t => t.City).HasMaxLength(120).IsRequired();
+            entity.Property(t => t.ReviewText).HasMaxLength(1200).IsRequired();
+            entity.Property(t => t.Rating).IsRequired();
         });
     }
 }

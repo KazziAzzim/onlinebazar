@@ -67,3 +67,17 @@ CREATE TABLE SiteContents (
     ModifiedBy NVARCHAR(450) NULL,
     IsDeleted BIT NOT NULL DEFAULT 0
 );
+
+CREATE TABLE Testimonials (
+    Id INT IDENTITY PRIMARY KEY,
+    CustomerName NVARCHAR(120) NOT NULL,
+    City NVARCHAR(120) NOT NULL,
+    ReviewText NVARCHAR(1200) NOT NULL,
+    Rating INT NOT NULL,
+    DisplayOrder INT NOT NULL DEFAULT 0,
+    CreatedDate DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    ModifiedDate DATETIME2 NULL,
+    CreatedBy NVARCHAR(450) NULL,
+    ModifiedBy NVARCHAR(450) NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0
+);
