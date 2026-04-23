@@ -281,5 +281,60 @@ public static class SeedData
             );
             await db.SaveChangesAsync();
         }
+
+        if (!db.Testimonials.Any())
+        {
+            db.Testimonials.AddRange(
+                new Testimonial
+                {
+                    CustomerName = "Sophia Carter",
+                    City = "Austin, TX",
+                    Rating = 5,
+                    ReviewText = "The product quality is excellent and delivery was faster than expected. My order arrived in perfect condition and the entire checkout flow was very smooth.",
+                    DisplayOrder = 1
+                },
+                new Testimonial
+                {
+                    CustomerName = "Daniel Nguyen",
+                    City = "Seattle, WA",
+                    Rating = 4,
+                    ReviewText = "Great customer support and reliable packaging. I had one quick question before placing the order and the response was prompt and helpful.",
+                    DisplayOrder = 2
+                },
+                new Testimonial
+                {
+                    CustomerName = "Ava Johnson",
+                    City = "Chicago, IL",
+                    Rating = 5,
+                    ReviewText = "I have placed multiple orders and the consistency is impressive. The catalog is easy to browse and every item has matched the listing details.",
+                    DisplayOrder = 3
+                },
+                new Testimonial
+                {
+                    CustomerName = "Liam Thompson",
+                    City = "Denver, CO",
+                    Rating = 5,
+                    ReviewText = "Very happy with the experience. Pricing was fair, shipping updates were clear, and the product looked exactly like the photos on the site.",
+                    DisplayOrder = 4
+                },
+                new Testimonial
+                {
+                    CustomerName = "Mia Rodriguez",
+                    City = "Miami, FL",
+                    Rating = 4,
+                    ReviewText = "Clean website, easy order tracking, and good value overall. The store has become one of my go-to options for gifts and essentials.",
+                    DisplayOrder = 5
+                },
+                new Testimonial
+                {
+                    CustomerName = "Noah Williams",
+                    City = "Phoenix, AZ",
+                    Rating = 5,
+                    ReviewText = "Highly recommended. The buying process was straightforward and the final product quality exceeded my expectations.",
+                    DisplayOrder = 6
+                }
+            );
+            await db.SaveChangesAsync();
+        }
     }
 }
