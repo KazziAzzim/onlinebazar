@@ -13,7 +13,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
     public DbSet<SiteContent> SiteContents => Set<SiteContent>();
-    public DbSet<Testimonial> Testimonials => Set<Testimonial>();
+    // Use a conventional auto-property for EF tooling compatibility
+    public DbSet<Testimonial> Testimonials { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
