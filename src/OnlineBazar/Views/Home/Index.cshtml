@@ -43,14 +43,39 @@
     <div class="featured-products-row pb-2">
         @foreach (var product in Model.FeaturedProducts)
         {
+            var discountPercentage = 20 + (product.Id % 5) * 5;
+            var originalPrice = Math.Round(product.Price / (1 - (discountPercentage / 100m)), 2);
+
             <article class="card product-card featured-product-card h-100">
-                <img src="@(string.IsNullOrWhiteSpace(product.ImageUrl) ? Url.Content("~/images/carousel/fashion-1.svg") : product.ImageUrl)"
-                     class="card-img-top product-card-image"
-                     alt="@product.Name" />
-                <div class="card-body">
-                    <h3 class="h6 product-card-title">@product.Name</h3>
-                    <p class="text-primary fw-semibold mb-3">$@product.Price.ToString("0.00")</p>
-                    <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn btn-sm btn-dark">View</a>
+                <div class="featured-product-image-wrap">
+                    <img src="@(string.IsNullOrWhiteSpace(product.ImageUrl) ? Url.Content("~/images/carousel/fashion-1.svg") : product.ImageUrl)"
+                         class="card-img-top product-card-image featured-product-image"
+                         alt="@product.Name" />
+                    <span class="featured-product-discount">-@discountPercentage%</span>
+                </div>
+                <div class="card-body featured-product-body d-flex flex-column">
+                    <h3 class="h5 product-card-title featured-product-title">@product.Name</h3>
+                    <p class="featured-product-category mb-3">@(string.IsNullOrWhiteSpace(product.Description) ? "Everyday Wear" : product.Description)</p>
+
+                    <div class="mt-auto mb-3">
+                        <span class="featured-product-old-price me-2">$@originalPrice.ToString("0.00")</span>
+                        <span class="featured-product-price">$@product.Price.ToString("0.00")</span>
+                    </div>
+
+                    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
+                    {
+                        <form asp-controller="Cart" asp-action="Add" method="post" class="d-grid">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="productId" value="@product.Id" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                            <button type="submit" class="btn featured-product-cta">ADD TO CART</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn featured-product-cta">VIEW PRODUCT</a>
+                    }
                 </div>
             </article>
         }
