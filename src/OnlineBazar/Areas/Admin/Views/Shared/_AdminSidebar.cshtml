@@ -7,6 +7,7 @@
     var isCategories = currentController == "categories" || currentPath.Contains("/admin/categories");
     var isUsers = currentController == "customers" || currentPath.Contains("/admin/customers");
     var isBanners = currentController == "banners" || currentPath.Contains("/admin/banners");
+    var isDeals = currentController == "deals" || currentPath.Contains("/admin/deals");
     var isCatalogOpen = isProducts || isCategories;
 }
 
@@ -51,6 +52,11 @@
         <a class="admin-link @(isBanners ? "active" : string.Empty)" asp-area="Admin" asp-controller="Banners" asp-action="Index">
             <i class="bi bi-images me-2"></i>
             Banners
+        </a>
+
+        <a class="admin-link @(isDeals ? "active" : string.Empty)" asp-area="Admin" asp-controller="Deals" asp-action="Index">
+            <i class="bi bi-lightning-charge me-2"></i>
+            Deals
         </a>
 
         <a class="admin-link @(isUsers ? "active" : string.Empty)" asp-area="Admin" asp-controller="Customers" asp-action="Index">

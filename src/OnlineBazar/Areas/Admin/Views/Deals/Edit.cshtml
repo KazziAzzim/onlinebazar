@@ -1,0 +1,91 @@
+@model OnlineBazar.DTOs.DealDto
+
+<h1>Edit Deal</h1>
+
+<form method="post" enctype="multipart/form-data" class="row g-3">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ImageUrl" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="col-md-6">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="DiscountType" class="form-label"></label>
+        <select asp-for="DiscountType" class="form-select">
+            <option value="Flat">Flat</option>
+            <option value="Percentage">Percentage</option>
+        </select>
+        <span asp-validation-for="DiscountType" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="DiscountValue" class="form-label"></label>
+        <input asp-for="DiscountValue" class="form-control" />
+        <span asp-validation-for="DiscountValue" class="text-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="RedirectUrl" class="form-label"></label>
+        <input asp-for="RedirectUrl" class="form-control" placeholder="https://example.com or /products" />
+        <span asp-validation-for="RedirectUrl" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="DisplayOrder" class="form-label"></label>
+        <input asp-for="DisplayOrder" class="form-control" />
+        <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-3 form-check mt-5 ms-1">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label"></label>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="StartDate" class="form-label"></label>
+        <input asp-for="StartDate" type="datetime-local" class="form-control" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="EndDate" class="form-label"></label>
+        <input asp-for="EndDate" type="datetime-local" class="form-control" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+    {
+        <div class="col-12">
+            <label class="form-label">Current Image</label>
+            <div>
+                <img src="@Model.ImageUrl" alt="@Model.Title" style="max-width: 320px; max-height: 180px; object-fit: cover;" class="border rounded" />
+            </div>
+        </div>
+    }
+
+    <div class="col-12">
+        <label class="form-label">Replace Image (optional)</label>
+        <input type="file" class="form-control" name="image" accept=".jpg,.jpeg,.png,.webp,.svg" />
+    </div>
+
+    <div class="col-12">
+        <button class="btn btn-primary">Update</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

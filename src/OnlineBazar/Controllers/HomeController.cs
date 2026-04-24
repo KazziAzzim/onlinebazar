@@ -8,11 +8,13 @@ public class HomeController : Controller
 {
     private readonly IProductService _productService;
     private readonly IBannerService _bannerService;
+    private readonly IDealService _dealService;
 
-    public HomeController(IProductService productService, IBannerService bannerService)
+    public HomeController(IProductService productService, IBannerService bannerService, IDealService dealService)
     {
         _productService = productService;
         _bannerService = bannerService;
+        _dealService = dealService;
     }
 
     public async Task<IActionResult> Index()
@@ -20,7 +22,8 @@ public class HomeController : Controller
         var model = new HomeViewModel
         {
             FeaturedProducts = await _productService.GetRandomProductsAsync(10),
-            Banners = await _bannerService.GetActiveBannersAsync()
+            Banners = await _bannerService.GetActiveBannersAsync(),
+            Deals = await _dealService.GetActiveDeals()
         };
 
         return View(model);

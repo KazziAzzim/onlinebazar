@@ -16,6 +16,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     // Use a conventional auto-property for EF tooling compatibility
     public DbSet<Testimonial> Testimonials { get; set; } = null!;
     public DbSet<Banner> Banners { get; set; } = null!;
+    public DbSet<Deal> Deals { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -68,6 +69,16 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(b => b.Subtitle).HasMaxLength(500);
             entity.Property(b => b.ImageUrl).HasMaxLength(500).IsRequired();
             entity.Property(b => b.RedirectUrl).HasMaxLength(500);
+        });
+
+        builder.Entity<Deal>(entity =>
+        {
+            entity.Property(d => d.Title).HasMaxLength(180).IsRequired();
+            entity.Property(d => d.Description).HasMaxLength(500);
+            entity.Property(d => d.ImageUrl).HasMaxLength(500);
+            entity.Property(d => d.DiscountType).HasMaxLength(20).IsRequired();
+            entity.Property(d => d.DiscountValue).HasColumnType("decimal(18,2)");
+            entity.Property(d => d.RedirectUrl).HasMaxLength(500);
         });
     }
 }

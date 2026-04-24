@@ -12,6 +12,7 @@ public static class SeedData
         var db = services.GetRequiredService<ApplicationDbContext>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var now = DateTime.UtcNow;
 
         await db.Database.MigrateAsync();
 
@@ -332,6 +333,69 @@ public static class SeedData
                     Rating = 5,
                     ReviewText = "Highly recommended. The buying process was straightforward and the final product quality exceeded my expectations.",
                     DisplayOrder = 6
+                }
+            );
+            await db.SaveChangesAsync();
+        }
+
+        if (!db.Deals.Any())
+        {
+            db.Deals.AddRange(
+                new Deal
+                {
+                    Title = "Flat ₹200 OFF",
+                    Description = "Save instantly on orders above ₹1999. Valid for selected categories.",
+                    ImageUrl = "https://images.unsplash.com/photo-1607082350899-7e105aa886ae?auto=format&fit=crop&w=1200&q=80",
+                    DiscountType = "Flat",
+                    DiscountValue = 200m,
+                    StartDate = now.AddHours(-2),
+                    EndDate = now.AddHours(10),
+                    RedirectUrl = "/products",
+                    DisplayOrder = 1,
+                    IsActive = true,
+                    CreatedAt = now
+                },
+                new Deal
+                {
+                    Title = "Weekend 25% OFF",
+                    Description = "Get 25% discount on fashion picks for a limited time.",
+                    ImageUrl = "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80",
+                    DiscountType = "Percentage",
+                    DiscountValue = 25m,
+                    StartDate = now.AddHours(-1),
+                    EndDate = now.AddDays(1),
+                    RedirectUrl = "/products?category=fashion",
+                    DisplayOrder = 2,
+                    IsActive = true,
+                    CreatedAt = now
+                },
+                new Deal
+                {
+                    Title = "Electronics Mega Deal",
+                    Description = "Flat ₹500 OFF on select electronics. Limited stock available.",
+                    ImageUrl = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+                    DiscountType = "Flat",
+                    DiscountValue = 500m,
+                    StartDate = now.AddHours(-3),
+                    EndDate = now.AddHours(6),
+                    RedirectUrl = "/products?category=electronics",
+                    DisplayOrder = 3,
+                    IsActive = true,
+                    CreatedAt = now
+                },
+                new Deal
+                {
+                    Title = "Archived Offer",
+                    Description = "Sample inactive deal for admin preview/testing.",
+                    ImageUrl = "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=1200&q=80",
+                    DiscountType = "Percentage",
+                    DiscountValue = 15m,
+                    StartDate = now.AddDays(-7),
+                    EndDate = now.AddDays(-1),
+                    RedirectUrl = "/products",
+                    DisplayOrder = 4,
+                    IsActive = false,
+                    CreatedAt = now
                 }
             );
             await db.SaveChangesAsync();
