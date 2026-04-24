@@ -7,17 +7,20 @@ namespace OnlineBazar.Controllers;
 public class HomeController : Controller
 {
     private readonly IProductService _productService;
+    private readonly IBannerService _bannerService;
 
-    public HomeController(IProductService productService)
+    public HomeController(IProductService productService, IBannerService bannerService)
     {
         _productService = productService;
+        _bannerService = bannerService;
     }
 
     public async Task<IActionResult> Index()
     {
         var model = new HomeViewModel
         {
-            FeaturedProducts = await _productService.GetRandomProductsAsync(10)
+            FeaturedProducts = await _productService.GetRandomProductsAsync(10),
+            Banners = await _bannerService.GetActiveBannersAsync()
         };
 
         return View(model);
