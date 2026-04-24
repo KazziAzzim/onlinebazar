@@ -231,6 +231,66 @@ body{background:#f8fafc;}
   min-height: 420px;
 }
 
+
+.trust-indicators-section{
+  padding:1.6rem;
+  border:1px solid #e5e7eb;
+  border-radius:.85rem;
+  background:linear-gradient(180deg, #ffffff, #f8fbff);
+}
+
+.trust-indicators-header{
+  justify-content:center;
+}
+
+.trust-indicator-card{
+  border:1px solid #e5e7eb;
+  border-radius:.75rem;
+  padding:1.25rem 1rem;
+  background:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.65rem;
+  box-shadow:0 6px 16px rgba(15,23,42,.05);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+
+.trust-indicator-card:hover{
+  transform:translateY(-4px) scale(1.01);
+  box-shadow:0 14px 30px rgba(15,23,42,.11);
+}
+
+.trust-indicator-icon-wrap{
+  width:3.2rem;
+  height:3.2rem;
+  border-radius:999px;
+  background:#eef2ff;
+  color:#4f46e5;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.trust-indicator-icon{
+  width:1.5rem;
+  height:1.5rem;
+  fill:currentColor;
+}
+
+.trust-indicator-title{
+  font-size:1.02rem;
+  font-weight:700;
+  margin-bottom:0;
+  color:#111827;
+}
+
+.trust-indicator-description{
+  color:#4b5563;
+  font-size:.92rem;
+  line-height:1.45;
+}
+
 .testimonials-card{
   border:1px solid #e5e7eb;
   border-radius:.5rem;
@@ -358,6 +418,14 @@ body{background:#f8fafc;}
 
   .testimonials-grid{
     min-height:0;
+  }
+
+  .trust-indicators-section{
+    padding:1.1rem;
+  }
+
+  .trust-indicator-card{
+    padding:1rem .9rem;
   }
 }
 
