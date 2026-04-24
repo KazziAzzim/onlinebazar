@@ -52,15 +52,7 @@ public class BannersController : Controller
         }
 
         dto.ImageUrl = imagePath;
-        try
-        {
-            await _bannerService.CreateAsync(dto);
-        }
-        catch (ArgumentException ex)
-        {
-            ModelState.AddModelError("image", ex.Message);
-            return View(dto);
-        }
+        await _bannerService.CreateAsync(dto);
 
         return RedirectToAction(nameof(Index));
     }
@@ -75,11 +67,6 @@ public class BannersController : Controller
     public async Task<IActionResult> Edit(BannerDto dto, IFormFile? image)
     {
         ValidateRedirectUrl(dto);
-
-        if (image is null && string.IsNullOrWhiteSpace(dto.ImageUrl))
-        {
-            ModelState.AddModelError("image", "Banner image is required.");
-        }
 
         if (!ModelState.IsValid)
         {
@@ -97,20 +84,7 @@ public class BannersController : Controller
             dto.ImageUrl = imagePath;
         }
 
-        try
-        {
-            await _bannerService.UpdateAsync(dto);
-        }
-        catch (ArgumentException ex)
-        {
-            ModelState.AddModelError("image", ex.Message);
-            return View(dto);
-        }
-        catch (KeyNotFoundException)
-        {
-            return NotFound();
-        }
-
+        await _bannerService.UpdateAsync(dto);
         return RedirectToAction(nameof(Index));
     }
 

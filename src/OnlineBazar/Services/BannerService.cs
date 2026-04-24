@@ -47,11 +47,6 @@ public class BannerService : IBannerService
 
     public async Task CreateAsync(BannerDto dto)
     {
-        if (string.IsNullOrWhiteSpace(dto.ImageUrl))
-        {
-            throw new ArgumentException("Banner image URL is required.", nameof(dto.ImageUrl));
-        }
-
         var entity = new Banner
         {
             Title = dto.Title,
@@ -69,11 +64,6 @@ public class BannerService : IBannerService
 
     public async Task UpdateAsync(BannerDto dto)
     {
-        if (string.IsNullOrWhiteSpace(dto.ImageUrl))
-        {
-            throw new ArgumentException("Banner image URL is required.", nameof(dto.ImageUrl));
-        }
-
         var banner = await _dbContext.Banners.FirstOrDefaultAsync(b => b.Id == dto.Id);
         if (banner is null)
         {
