@@ -1,0 +1,57 @@
+@model OnlineBazar.DTOs.BannerDto
+
+<h1>Edit Banner</h1>
+
+<form method="post" enctype="multipart/form-data" class="row g-3">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ImageUrl" />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="col-md-6">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="DisplayOrder" class="form-label"></label>
+        <input asp-for="DisplayOrder" class="form-control" />
+        <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Subtitle" class="form-label"></label>
+        <textarea asp-for="Subtitle" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="Subtitle" class="text-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="RedirectUrl" class="form-label"></label>
+        <input asp-for="RedirectUrl" class="form-control" placeholder="https://example.com or /products" />
+        <span asp-validation-for="RedirectUrl" class="text-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <label class="form-label">Current Image</label>
+        <div>
+            <img src="@Model.ImageUrl" alt="@Model.Title" style="max-width: 420px; max-height: 180px; object-fit: cover;" class="border rounded" />
+        </div>
+    </div>
+
+    <div class="col-12">
+        <label class="form-label">Replace Image (optional)</label>
+        <input type="file" class="form-control" name="image" accept=".jpg,.jpeg,.png,.webp" />
+        <span class="text-danger">@Html.ValidationMessage("image")</span>
+    </div>
+
+    <div class="col-12 form-check ms-1">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label"></label>
+    </div>
+
+    <div class="col-12">
+        <button class="btn btn-primary">Update</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
+    </div>
+</form>

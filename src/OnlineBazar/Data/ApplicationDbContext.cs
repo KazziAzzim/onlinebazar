@@ -15,6 +15,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<SiteContent> SiteContents => Set<SiteContent>();
     // Use a conventional auto-property for EF tooling compatibility
     public DbSet<Testimonial> Testimonials { get; set; } = null!;
+    public DbSet<Banner> Banners { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -59,6 +60,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(t => t.City).HasMaxLength(120).IsRequired();
             entity.Property(t => t.ReviewText).HasMaxLength(1200).IsRequired();
             entity.Property(t => t.Rating).IsRequired();
+        });
+
+        builder.Entity<Banner>(entity =>
+        {
+            entity.Property(b => b.Title).HasMaxLength(250);
+            entity.Property(b => b.Subtitle).HasMaxLength(500);
+            entity.Property(b => b.ImageUrl).HasMaxLength(500).IsRequired();
+            entity.Property(b => b.RedirectUrl).HasMaxLength(500);
         });
     }
 }
