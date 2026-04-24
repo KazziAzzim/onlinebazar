@@ -39,10 +39,79 @@ body{background:#f8fafc;}
 .carousel-control-prev,.carousel-control-next{width:8%;}
 .carousel-indicators [data-bs-target]{width:2.25rem;}
 
+.featured-products-carousel{
+  --featured-gap:1rem;
+  --featured-items-per-view:4;
+  position:relative;
+  padding-inline:2.8rem;
+}
+
+.featured-products-viewport{
+  overflow:hidden;
+}
+
 .featured-products-row{
-  display:grid;
-  grid-template-columns:repeat(4, minmax(0, 1fr));
-  gap:1rem;
+  display:flex;
+  gap:var(--featured-gap);
+  transition:transform .55s ease;
+  will-change:transform;
+}
+
+.featured-product-slide{
+  flex:0 0 calc((100% - (var(--featured-gap) * (var(--featured-items-per-view) - 1))) / var(--featured-items-per-view));
+  min-width:0;
+}
+
+.featured-carousel-control{
+  position:absolute;
+  top:45%;
+  transform:translateY(-50%);
+  width:2.2rem;
+  height:2.2rem;
+  border:1px solid #d1d5db;
+  border-radius:999px;
+  background:#fff;
+  color:#111827;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.2rem;
+  line-height:1;
+  z-index:2;
+  transition:all .2s ease;
+}
+
+.featured-carousel-control:hover,
+.featured-carousel-control:focus{
+  background:#111827;
+  color:#fff;
+  border-color:#111827;
+}
+
+.featured-carousel-control-prev{left:.2rem;}
+.featured-carousel-control-next{right:.2rem;}
+
+.featured-carousel-dots{
+  margin-top:.9rem;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:.45rem;
+}
+
+.featured-carousel-dot{
+  width:.62rem;
+  height:.62rem;
+  border-radius:999px;
+  border:none;
+  background:#d1d5db;
+  padding:0;
+  transition:all .2s ease;
+}
+
+.featured-carousel-dot.is-active{
+  width:1.5rem;
+  background:#111827;
 }
 .featured-product-card{
   width:100%;
@@ -241,9 +310,15 @@ body{background:#f8fafc;}
   }
 
   .featured-products-row{
-    grid-template-columns:1fr;
     gap:.9rem;
-    overflow:visible;
+  }
+
+  .featured-products-carousel{
+    padding-inline:0;
+  }
+
+  .featured-carousel-control{
+    display:none;
   }
 
   .featured-product-card{

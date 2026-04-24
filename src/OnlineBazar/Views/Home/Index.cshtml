@@ -42,9 +42,15 @@
         </a>
     </div>
 
-    <div class="featured-products-row pb-2">
-        @foreach (var product in Model.FeaturedProducts)
-        {
+    <div id="featuredProductsCarousel" class="featured-products-carousel pb-2" data-autoplay-ms="4000" aria-label="Featured products slider">
+        <button type="button" class="featured-carousel-control featured-carousel-control-prev" data-direction="prev" aria-label="Previous featured products">
+            <span aria-hidden="true">&#10094;</span>
+        </button>
+
+        <div class="featured-products-viewport">
+            <div class="featured-products-row">
+                @foreach (var product in Model.FeaturedProducts)
+                {
             var discountPercentage = 20 + (product.Id % 5) * 5;
             var originalPrice = Math.Round(product.Price / (1 - (discountPercentage / 100m)), 2);
             var productDescription = string.IsNullOrWhiteSpace(product.Description) ? "Everyday Wear" : product.Description.Trim();
@@ -54,48 +60,58 @@
                 ? $"{productDescription[..descriptionLimit].TrimEnd()}..."
                 : productDescription;
 
-            <article class="card product-card featured-product-card h-100">
-                <div class="featured-product-image-wrap">
-                    <img src="@(string.IsNullOrWhiteSpace(product.ImageUrl) ? Url.Content("~/images/carousel/fashion-1.svg") : product.ImageUrl)"
-                         class="card-img-top product-card-image featured-product-image"
-                         alt="@product.Name" />
-                    <span class="featured-product-discount">-@discountPercentage%</span>
-                </div>
-                <div class="card-body featured-product-body d-flex flex-column">
-                    <h3 class="h5 product-card-title featured-product-title">@product.Name</h3>
-                    <p class="featured-product-category mb-3">
-                        <span>@truncatedDescription</span>
-                        @if (isDescriptionTruncated)
-                        {
-                            <a asp-controller="Products"
-                               asp-action="Details"
-                               asp-route-id="@product.Id"
-                               class="featured-product-more-link ms-1">More</a>
-                        }
-                    </p>
+                    <div class="featured-product-slide">
+                        <article class="card product-card featured-product-card h-100">
+                            <div class="featured-product-image-wrap">
+                                <img src="@(string.IsNullOrWhiteSpace(product.ImageUrl) ? Url.Content("~/images/carousel/fashion-1.svg") : product.ImageUrl)"
+                                     class="card-img-top product-card-image featured-product-image"
+                                     alt="@product.Name" />
+                                <span class="featured-product-discount">-@discountPercentage%</span>
+                            </div>
+                            <div class="card-body featured-product-body d-flex flex-column">
+                                <h3 class="h5 product-card-title featured-product-title">@product.Name</h3>
+                                <p class="featured-product-category mb-3">
+                                    <span>@truncatedDescription</span>
+                                    @if (isDescriptionTruncated)
+                                    {
+                                        <a asp-controller="Products"
+                                           asp-action="Details"
+                                           asp-route-id="@product.Id"
+                                           class="featured-product-more-link ms-1">More</a>
+                                    }
+                                </p>
 
-                    <div class="mt-auto mb-3">
-                        <span class="featured-product-old-price me-2">$@originalPrice.ToString("0.00")</span>
-                        <span class="featured-product-price">$@product.Price.ToString("0.00")</span>
+                                <div class="mt-auto mb-3">
+                                    <span class="featured-product-old-price me-2">$@originalPrice.ToString("0.00")</span>
+                                    <span class="featured-product-price">$@product.Price.ToString("0.00")</span>
+                                </div>
+
+                                @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
+                                {
+                                    <form asp-controller="Cart" asp-action="Add" method="post" class="d-grid">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="productId" value="@product.Id" />
+                                        <input type="hidden" name="quantity" value="1" />
+                                        <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                                        <button type="submit" class="btn featured-product-cta">ADD TO CART</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn featured-product-cta">VIEW PRODUCT</a>
+                                }
+                            </div>
+                        </article>
                     </div>
+                }
+            </div>
+        </div>
 
-                    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
-                    {
-                        <form asp-controller="Cart" asp-action="Add" method="post" class="d-grid">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="productId" value="@product.Id" />
-                            <input type="hidden" name="quantity" value="1" />
-                            <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
-                            <button type="submit" class="btn featured-product-cta">ADD TO CART</button>
-                        </form>
-                    }
-                    else
-                    {
-                        <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn featured-product-cta">VIEW PRODUCT</a>
-                    }
-                </div>
-            </article>
-        }
+        <button type="button" class="featured-carousel-control featured-carousel-control-next" data-direction="next" aria-label="Next featured products">
+            <span aria-hidden="true">&#10095;</span>
+        </button>
+
+        <div class="featured-carousel-dots" aria-hidden="true"></div>
     </div>
 </section>
 
@@ -110,6 +126,117 @@
 @section Scripts {
     <script>
         (() => {
+            const carousel = document.getElementById("featuredProductsCarousel");
+            if (carousel) {
+                const track = carousel.querySelector(".featured-products-row");
+                const slides = Array.from(carousel.querySelectorAll(".featured-product-slide"));
+                const prevButton = carousel.querySelector('[data-direction="prev"]');
+                const nextButton = carousel.querySelector('[data-direction="next"]');
+                const dotsContainer = carousel.querySelector(".featured-carousel-dots");
+                const autoplayInterval = Number.parseInt(carousel.dataset.autoplayMs ?? "4000", 10);
+
+                if (track && slides.length > 0) {
+                    let itemsPerView = 1;
+                    let currentIndex = 0;
+                    let maxIndex = 0;
+                    let autoplayTimer = null;
+                    let dots = [];
+
+                    const getItemsPerView = () => {
+                        const width = window.innerWidth;
+                        if (width >= 1400) return 5;
+                        if (width >= 1200) return 4;
+                        if (width >= 992) return 3;
+                        if (width >= 576) return 2;
+                        return 1;
+                    };
+
+                    const setTransform = () => {
+                        const activeSlide = slides[currentIndex];
+                        const offset = activeSlide ? activeSlide.offsetLeft : 0;
+                        track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+                    };
+
+                    const updateControls = () => {
+                        dots.forEach((dot, idx) => {
+                            const isActive = idx === currentIndex;
+                            dot.classList.toggle("is-active", isActive);
+                            dot.setAttribute("aria-current", isActive ? "true" : "false");
+                        });
+                    };
+
+                    const goToSlide = (nextIndex) => {
+                        currentIndex = Math.min(Math.max(nextIndex, 0), maxIndex);
+                        setTransform();
+                        updateControls();
+                    };
+
+                    const step = (direction) => {
+                        const target = direction === "next"
+                            ? (currentIndex >= maxIndex ? 0 : currentIndex + 1)
+                            : (currentIndex <= 0 ? maxIndex : currentIndex - 1);
+                        goToSlide(target);
+                    };
+
+                    const buildDots = () => {
+                        if (!dotsContainer) return;
+
+                        const pages = maxIndex + 1;
+                        dotsContainer.innerHTML = Array.from({ length: pages }, (_, idx) =>
+                            `<button type="button" class="featured-carousel-dot ${idx === currentIndex ? "is-active" : ""}" data-slide="${idx}" aria-label="Go to featured products slide ${idx + 1}" aria-current="${idx === currentIndex}"></button>`
+                        ).join("");
+
+                        dotsContainer.hidden = pages <= 1;
+
+                        dots = Array.from(dotsContainer.querySelectorAll(".featured-carousel-dot"));
+                        dots.forEach(dot => {
+                            dot.addEventListener("click", () => {
+                                const slideIndex = Number.parseInt(dot.dataset.slide ?? "0", 10);
+                                goToSlide(slideIndex);
+                            });
+                        });
+                    };
+
+                    const recalculate = () => {
+                        itemsPerView = Math.min(getItemsPerView(), slides.length);
+                        maxIndex = Math.max(0, slides.length - itemsPerView);
+                        carousel.style.setProperty("--featured-items-per-view", `${itemsPerView}`);
+                        currentIndex = Math.min(currentIndex, maxIndex);
+                        buildDots();
+                        setTransform();
+                        updateControls();
+                    };
+
+                    const startAutoplay = () => {
+                        if (autoplayTimer || slides.length <= itemsPerView) return;
+                        autoplayTimer = window.setInterval(() => step("next"), autoplayInterval);
+                    };
+
+                    const stopAutoplay = () => {
+                        if (!autoplayTimer) return;
+                        window.clearInterval(autoplayTimer);
+                        autoplayTimer = null;
+                    };
+
+                    prevButton?.addEventListener("click", () => step("prev"));
+                    nextButton?.addEventListener("click", () => step("next"));
+
+                    carousel.addEventListener("mouseenter", stopAutoplay);
+                    carousel.addEventListener("mouseleave", startAutoplay);
+                    carousel.addEventListener("focusin", stopAutoplay);
+                    carousel.addEventListener("focusout", (event) => {
+                        if (!carousel.contains(event.relatedTarget)) {
+                            startAutoplay();
+                        }
+                    });
+
+                    window.addEventListener("resize", recalculate);
+
+                    recalculate();
+                    startAutoplay();
+                }
+            }
+
             const testimonialsGrid = document.getElementById("testimonialsGrid");
             if (!testimonialsGrid) return;
 
