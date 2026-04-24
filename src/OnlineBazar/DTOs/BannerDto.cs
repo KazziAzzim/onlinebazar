@@ -12,8 +12,6 @@ public class BannerDto
     [StringLength(500)]
     public string? Subtitle { get; set; }
 
-    [Required]
-    [StringLength(500)]
     public string ImageUrl { get; set; } = string.Empty;
 
     [StringLength(500)]

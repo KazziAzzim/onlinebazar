@@ -11,7 +11,7 @@ public class BannersController : Controller
 {
     private static readonly HashSet<string> AllowedExtensions = new(StringComparer.OrdinalIgnoreCase)
     {
-        ".jpg", ".jpeg", ".png", ".webp"
+        ".jpg", ".jpeg", ".png", ".webp", ".svg"
     };
 
     private readonly IBannerService _bannerService;
@@ -40,10 +40,7 @@ public class BannersController : Controller
             ModelState.AddModelError("image", "Banner image is required.");
         }
 
-        if (!ModelState.IsValid)
-        {
-            return View(dto);
-        }
+
 
         var imagePath = await SaveImageAsync(image!);
         if (string.IsNullOrWhiteSpace(imagePath))
@@ -52,6 +49,10 @@ public class BannersController : Controller
         }
 
         dto.ImageUrl = imagePath;
+        if (!ModelState.IsValid)
+        {
+            return View(dto);
+        }
         await _bannerService.CreateAsync(dto);
 
         return RedirectToAction(nameof(Index));
