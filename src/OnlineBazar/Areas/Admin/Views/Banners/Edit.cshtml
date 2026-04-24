@@ -6,7 +6,7 @@
     <input type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="ImageUrl" />
 
-    <div asp-validation-summary="All" class="text-danger"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="col-md-6">
         <label asp-for="Title" class="form-label"></label>
@@ -42,7 +42,6 @@
     <div class="col-12">
         <label class="form-label">Replace Image (optional)</label>
         <input type="file" class="form-control" name="image" accept=".jpg,.jpeg,.png,.webp" />
-        <span class="text-danger">@Html.ValidationMessage("image")</span>
     </div>
 
     <div class="col-12 form-check ms-1">
@@ -55,3 +54,7 @@
         <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
     </div>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

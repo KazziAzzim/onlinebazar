@@ -34,7 +34,6 @@ public class BannersController : Controller
     public async Task<IActionResult> Create(BannerDto dto, IFormFile? image)
     {
         ValidateRedirectUrl(dto);
-        ModelState.Remove(nameof(BannerDto.ImageUrl));
 
         if (image is null)
         {
