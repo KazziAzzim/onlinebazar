@@ -5,6 +5,7 @@ namespace OnlineBazar.ViewModels;
 public class HomeViewModel
 {
     public IEnumerable<ProductDto> FeaturedProducts { get; set; } = new List<ProductDto>();
+    public IEnumerable<BannerDto> Banners { get; set; } = new List<BannerDto>();
     public IEnumerable<ProductDto> CarouselProducts { get; set; } = new List<ProductDto>();
     public IEnumerable<CategoryProductGroupViewModel> CategoryGroups { get; set; } = new List<CategoryProductGroupViewModel>();
 }
