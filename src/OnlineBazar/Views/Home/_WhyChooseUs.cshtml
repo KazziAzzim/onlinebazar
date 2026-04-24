@@ -3,8 +3,6 @@
     {
         new { Key = "pickup", Title = "Free Pickup", Description = "Collect your order quickly from nearby pickup points at no extra cost." },
         new { Key = "payment", Title = "Instant Payment", Description = "Fast checkout with immediate confirmations across trusted payment methods." },
-        new { Key = "verified", Title = "Verified Products", Description = "Every listing is quality-checked and verified before it reaches customers." },
-        new { Key = "warranty", Title = "Warranty Available", Description = "Selected products include warranty coverage for added peace of mind." },
         new { Key = "secure", Title = "Secure Transactions", Description = "Your personal data and payments are protected by modern security standards." },
         new { Key = "support", Title = "Customer Support", Description = "Our support team is ready to help with orders, returns, and product questions." }
     };
@@ -31,16 +29,6 @@
                             case "payment":
                                 <svg viewBox="0 0 24 24" class="trust-indicator-icon" role="img" focusable="false">
                                     <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h13A2.5 2.5 0 0 1 21 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 16.5v-9Zm2 1v2h14v-2a.5.5 0 0 0-.5-.5h-13a.5.5 0 0 0-.5.5Zm4 6h4a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2Z" />
-                                </svg>
-                                break;
-                            case "verified":
-                                <svg viewBox="0 0 24 24" class="trust-indicator-icon" role="img" focusable="false">
-                                    <path d="M12 2.5 4.5 5.7v5.1c0 5 3.2 9.6 7.5 10.7 4.3-1.1 7.5-5.7 7.5-10.7V5.7L12 2.5Zm3.4 7.8-4.1 4.1a1 1 0 0 1-1.4 0l-1.8-1.8a1 1 0 1 1 1.4-1.4l1.1 1.1 3.4-3.4a1 1 0 0 1 1.4 1.4Z" />
-                                </svg>
-                                break;
-                            case "warranty":
-                                <svg viewBox="0 0 24 24" class="trust-indicator-icon" role="img" focusable="false">
-                                    <path d="M12 2.2 5 4.8v6c0 5.1 2.9 9.5 7 11 4.1-1.5 7-5.9 7-11v-6l-7-2.6Zm3.8 8.9-4.7 4.7a1 1 0 0 1-1.4 0l-2.3-2.3a1 1 0 0 1 1.4-1.4l1.6 1.6 4-4a1 1 0 1 1 1.4 1.4Z" />
                                 </svg>
                                 break;
                             case "secure":
