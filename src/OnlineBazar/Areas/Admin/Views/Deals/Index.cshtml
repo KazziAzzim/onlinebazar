@@ -1,0 +1,60 @@
+@model IEnumerable<OnlineBazar.DTOs.DealDto>
+
+@{
+    ViewData["Title"] = "Manage Deals";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3">Deals</h1>
+    <a class="btn btn-primary" asp-action="Create">New Deal</a>
+</div>
+
+<table class="table table-bordered align-middle">
+    <thead>
+        <tr>
+            <th>Offer</th>
+            <th>Discount</th>
+            <th>Duration (UTC)</th>
+            <th>Display Order</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var deal in Model)
+        {
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center gap-2">
+                        @if (!string.IsNullOrWhiteSpace(deal.ImageUrl))
+                        {
+                            <img src="@deal.ImageUrl" alt="@deal.Title" style="width: 72px; height: 48px; object-fit: cover;" class="rounded border" />
+                        }
+                        <div>
+                            <div class="fw-semibold">@deal.Title</div>
+                            @if (!string.IsNullOrWhiteSpace(deal.Description))
+                            {
+                                <small class="text-muted">@deal.Description</small>
+                            }
+                        </div>
+                    </div>
+                </td>
+                <td>@deal.DiscountType @deal.DiscountValue</td>
+                <td>@deal.StartDate.ToString("yyyy-MM-dd HH:mm") → @deal.EndDate.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@deal.DisplayOrder</td>
+                <td>
+                    <span class="badge @(deal.IsActive ? "bg-success" : "bg-secondary")">
+                        @(deal.IsActive ? "Active" : "Inactive")
+                    </span>
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@deal.Id">Edit</a>
+                    <form method="post" asp-action="Delete" asp-route-id="@deal.Id" class="d-inline" onsubmit="return confirm('Delete this deal?');">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

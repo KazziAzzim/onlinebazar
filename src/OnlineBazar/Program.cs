@@ -33,6 +33,7 @@ builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<ITestimonialService, TestimonialService>();
 builder.Services.AddScoped<IBannerService, BannerService>();
+builder.Services.AddScoped<IDealService, DealService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>

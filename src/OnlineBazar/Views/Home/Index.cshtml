@@ -169,6 +169,49 @@
     </div>
 </section>
 
+@if (Model.Deals.Any())
+{
+    <section class="home-section">
+        <div class="home-section-header mb-3">
+            <h2 class="h4 mb-0">🔥 Today’s Deals</h2>
+        </div>
+
+        <div class="row g-3 deals-grid">
+            @foreach (var deal in Model.Deals)
+            {
+                var fallbackImage = Url.Content("~/images/carousel/fashion-2.svg");
+                var normalizedDiscountType = (deal.DiscountType ?? string.Empty).Trim().ToLowerInvariant();
+                var discountLabel = normalizedDiscountType == "percentage"
+                    ? $"{deal.DiscountValue:0.##}% OFF"
+                    : $"Flat ₹{deal.DiscountValue:0.##} OFF";
+                <div class="col-12 col-md-6 col-xl-3 d-flex">
+                    <article class="card deal-card h-100 w-100" data-deal-card data-end-date="@deal.EndDate.ToString("o")">
+                        <div class="deal-image-wrap">
+                            <img src="@(string.IsNullOrWhiteSpace(deal.ImageUrl) ? fallbackImage : deal.ImageUrl)"
+                                 class="deal-image"
+                                 alt="@deal.Title" />
+                            <span class="badge rounded-pill deal-badge">Limited Time</span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h3 class="h5 mb-2 deal-title">@deal.Title</h3>
+                            <p class="deal-discount-label mb-2">@discountLabel</p>
+                            @if (!string.IsNullOrWhiteSpace(deal.Description))
+                            {
+                                <p class="deal-description mb-3">@deal.Description</p>
+                            }
+                            <div class="deal-timer mb-3" data-deal-timer>00:00:00</div>
+                            <a href="@(string.IsNullOrWhiteSpace(deal.RedirectUrl) ? Url.Action("Index", "Products") : deal.RedirectUrl)"
+                               class="btn deal-cta mt-auto">
+                                Shop Now
+                            </a>
+                        </div>
+                    </article>
+                </div>
+            }
+        </div>
+    </section>
+}
+
 <section class="home-section">
     <div class="home-section-header mb-3">
         <h2 class="h4 mb-0">What Our Customers Say</h2>
@@ -291,6 +334,50 @@
                     recalculate();
                     startAutoplay();
                 }
+            }
+
+            const dealCards = Array.from(document.querySelectorAll("[data-deal-card]"));
+            if (dealCards.length > 0) {
+                const formatTimer = (milliseconds) => {
+                    if (milliseconds <= 0) {
+                        return "00:00:00";
+                    }
+
+                    const totalSeconds = Math.floor(milliseconds / 1000);
+                    const hours = Math.floor(totalSeconds / 3600);
+                    const minutes = Math.floor((totalSeconds % 3600) / 60);
+                    const seconds = totalSeconds % 60;
+
+                    return [hours, minutes, seconds]
+                        .map(value => value.toString().padStart(2, "0"))
+                        .join(":");
+                };
+
+                const updateDealTimers = () => {
+                    const now = Date.now();
+                    dealCards.forEach(card => {
+                        const timerElement = card.querySelector("[data-deal-timer]");
+                        const endDateRaw = card.getAttribute("data-end-date");
+                        const endTime = endDateRaw ? new Date(endDateRaw).getTime() : Number.NaN;
+
+                        if (!timerElement || Number.isNaN(endTime)) {
+                            return;
+                        }
+
+                        const remainingTime = endTime - now;
+                        if (remainingTime <= 0) {
+                            timerElement.textContent = "Expired";
+                            card.classList.add("deal-expired");
+                            window.setTimeout(() => card.classList.add("d-none"), 1500);
+                            return;
+                        }
+
+                        timerElement.textContent = formatTimer(remainingTime);
+                    });
+                };
+
+                updateDealTimers();
+                window.setInterval(updateDealTimers, 1000);
             }
 
             const testimonialsGrid = document.getElementById("testimonialsGrid");

@@ -598,3 +598,75 @@ body{background:#f8fafc;}
   margin-top: .4rem;
   font-size: .95rem;
 }
+
+.deal-card{
+  border:1px solid #e5e7eb;
+  border-radius:.75rem;
+  overflow:hidden;
+  box-shadow:0 8px 20px rgba(15,23,42,.08);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+
+.deal-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 16px 30px rgba(15,23,42,.14);
+}
+
+.deal-image-wrap{
+  position:relative;
+  min-height:180px;
+  background:#f3f4f6;
+}
+
+.deal-image{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
+
+.deal-badge{
+  position:absolute;
+  top:.75rem;
+  left:.75rem;
+  background:#b91c1c;
+  color:#fff;
+}
+
+.deal-title{
+  color:#111827;
+  font-weight:700;
+}
+
+.deal-discount-label{
+  color:#15803d;
+  font-weight:700;
+}
+
+.deal-description{
+  color:#4b5563;
+  min-height:2.8rem;
+}
+
+.deal-timer{
+  color:#dc2626;
+  font-weight:800;
+  letter-spacing:.06em;
+  font-family:"SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.deal-cta{
+  background:#111827;
+  color:#fff;
+  border:1px solid #111827;
+}
+
+.deal-cta:hover,
+.deal-cta:focus{
+  background:#000;
+  color:#fff;
+  border-color:#000;
+}
+
+.deal-expired{
+  opacity:.5;
+}
