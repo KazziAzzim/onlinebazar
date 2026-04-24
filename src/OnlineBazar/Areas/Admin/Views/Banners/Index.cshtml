@@ -1,0 +1,48 @@
+@model IEnumerable<OnlineBazar.DTOs.BannerDto>
+
+@{
+    ViewData["Title"] = "Manage Banners";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3">Banners</h1>
+    <a class="btn btn-primary" asp-action="Create">New Banner</a>
+</div>
+
+<table class="table table-bordered align-middle">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Display Order</th>
+            <th>Is Active</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var banner in Model)
+        {
+            <tr>
+                <td><img src="@banner.ImageUrl" alt="@banner.Title" style="width: 140px; height: 60px; object-fit: cover;" /></td>
+                <td>@(string.IsNullOrWhiteSpace(banner.Title) ? "-" : banner.Title)</td>
+                <td>@banner.DisplayOrder</td>
+                <td>
+                    <span class="badge @(banner.IsActive ? "bg-success" : "bg-secondary")">
+                        @(banner.IsActive ? "Active" : "Inactive")
+                    </span>
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@banner.Id">Edit</a>
+
+                    <form method="post" asp-action="ToggleActive" asp-route-id="@banner.Id" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-outline-warning">Toggle Active</button>
+                    </form>
+
+                    <form method="post" asp-action="Delete" asp-route-id="@banner.Id" class="d-inline" onsubmit="return confirm('Delete this banner?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

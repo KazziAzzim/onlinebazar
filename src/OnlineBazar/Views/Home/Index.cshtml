@@ -6,21 +6,75 @@
 
 <div class="home-page">
 <section id="homeBannerCarousel" class="carousel slide shadow-sm rounded overflow-hidden home-hero-carousel" data-bs-ride="carousel">
+    @{
+        var dynamicBanners = Model.Banners.ToList();
+        var fallbackBanners = new[]
+        {
+            new { ImageUrl = Url.Content("~/images/carousel/fashion-1.svg"), Title = "Spring collection banner", Subtitle = string.Empty, RedirectUrl = string.Empty },
+            new { ImageUrl = Url.Content("~/images/carousel/fashion-2.svg"), Title = "New arrivals banner", Subtitle = string.Empty, RedirectUrl = string.Empty },
+            new { ImageUrl = Url.Content("~/images/carousel/fashion-3.svg"), Title = "Discount offers banner", Subtitle = string.Empty, RedirectUrl = string.Empty }
+        };
+        var hasDynamicBanners = dynamicBanners.Count > 0;
+        var bannerItems = hasDynamicBanners
+            ? dynamicBanners.Select(b => new { b.ImageUrl, b.Title, b.Subtitle, b.RedirectUrl }).ToList()
+            : fallbackBanners.Select(b => new { b.ImageUrl, b.Title, b.Subtitle, b.RedirectUrl }).ToList();
+    }
+
     <div class="carousel-indicators">
-        <button type="button" data-bs-target="#homeBannerCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Banner 1"></button>
-        <button type="button" data-bs-target="#homeBannerCarousel" data-bs-slide-to="1" aria-label="Banner 2"></button>
-        <button type="button" data-bs-target="#homeBannerCarousel" data-bs-slide-to="2" aria-label="Banner 3"></button>
+        @for (var i = 0; i < bannerItems.Count; i++)
+        {
+            <button type="button"
+                    data-bs-target="#homeBannerCarousel"
+                    data-bs-slide-to="@i"
+                    class="@(i == 0 ? "active" : string.Empty)"
+                    aria-current="@(i == 0 ? "true" : "false")"
+                    aria-label="Banner @(i + 1)"></button>
+        }
     </div>
     <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="~/images/carousel/fashion-1.svg" class="d-block w-100" alt="Spring collection banner" />
-        </div>
-        <div class="carousel-item">
-            <img src="~/images/carousel/fashion-2.svg" class="d-block w-100" alt="New arrivals banner" />
-        </div>
-        <div class="carousel-item">
-            <img src="~/images/carousel/fashion-3.svg" class="d-block w-100" alt="Discount offers banner" />
-        </div>
+        @for (var i = 0; i < bannerItems.Count; i++)
+        {
+            var banner = bannerItems[i];
+            var hasContent = !string.IsNullOrWhiteSpace(banner.Title) || !string.IsNullOrWhiteSpace(banner.Subtitle);
+            <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
+                @if (!string.IsNullOrWhiteSpace(banner.RedirectUrl))
+                {
+                    <a href="@banner.RedirectUrl" class="home-banner-link">
+                        <img src="@banner.ImageUrl" class="d-block w-100" alt="@(string.IsNullOrWhiteSpace(banner.Title) ? $"Homepage banner {i + 1}" : banner.Title)" />
+                        @if (hasContent)
+                        {
+                            <div class="home-banner-overlay">
+                                @if (!string.IsNullOrWhiteSpace(banner.Title))
+                                {
+                                    <h2 class="home-banner-title">@banner.Title</h2>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(banner.Subtitle))
+                                {
+                                    <p class="home-banner-subtitle mb-0">@banner.Subtitle</p>
+                                }
+                            </div>
+                        }
+                    </a>
+                }
+                else
+                {
+                    <img src="@banner.ImageUrl" class="d-block w-100" alt="@(string.IsNullOrWhiteSpace(banner.Title) ? $"Homepage banner {i + 1}" : banner.Title)" />
+                    @if (hasContent)
+                    {
+                        <div class="home-banner-overlay">
+                            @if (!string.IsNullOrWhiteSpace(banner.Title))
+                            {
+                                <h2 class="home-banner-title">@banner.Title</h2>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(banner.Subtitle))
+                            {
+                                <p class="home-banner-subtitle mb-0">@banner.Subtitle</p>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        }
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#homeBannerCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
