@@ -354,9 +354,9 @@ public static class SeedData
                     ShippingAddress = "100 Main St, Austin, TX",
                     Items = new List<OrderItem>
                     {
-                        new() { ProductId = productsBySlug["noise-cancelling-headphones"].Id, Quantity = 3, Price = productsBySlug["noise-cancelling-headphones"].Price },
+                        new() { ProductId = productsBySlug["power-bank"].Id, Quantity = 3, Price = productsBySlug["power-bank"].Price },
                         new() { ProductId = productsBySlug["wireless-earbuds"].Id, Quantity = 2, Price = productsBySlug["wireless-earbuds"].Price },
-                        new() { ProductId = productsBySlug["usb-c-fast-charger"].Id, Quantity = 1, Price = productsBySlug["usb-c-fast-charger"].Price }
+                        new() { ProductId = productsBySlug["wireless-earbuds"].Id, Quantity = 1, Price = productsBySlug["wireless-earbuds"].Price }
                     }
                 },
                 new()
@@ -367,7 +367,7 @@ public static class SeedData
                     ShippingAddress = "25 Oak Ave, Seattle, WA",
                     Items = new List<OrderItem>
                     {
-                        new() { ProductId = productsBySlug["noise-cancelling-headphones"].Id, Quantity = 2, Price = productsBySlug["noise-cancelling-headphones"].Price },
+                        new() { ProductId = productsBySlug["power-bank"].Id, Quantity = 2, Price = productsBySlug["power-bank"].Price },
                         new() { ProductId = productsBySlug["portable-bluetooth-speaker"].Id, Quantity = 2, Price = productsBySlug["portable-bluetooth-speaker"].Price },
                         new() { ProductId = productsBySlug["smart-fitness-watch"].Id, Quantity = 1, Price = productsBySlug["smart-fitness-watch"].Price }
                     }
@@ -381,7 +381,7 @@ public static class SeedData
                     Items = new List<OrderItem>
                     {
                         new() { ProductId = productsBySlug["wireless-earbuds"].Id, Quantity = 4, Price = productsBySlug["wireless-earbuds"].Price },
-                        new() { ProductId = productsBySlug["noise-cancelling-headphones"].Id, Quantity = 1, Price = productsBySlug["noise-cancelling-headphones"].Price },
+                        new() { ProductId = productsBySlug["power-bank"].Id, Quantity = 1, Price = productsBySlug["power-bank"].Price },
                         new() { ProductId = productsBySlug["smart-fitness-watch"].Id, Quantity = 2, Price = productsBySlug["smart-fitness-watch"].Price }
                     }
                 },
@@ -407,7 +407,7 @@ public static class SeedData
                     Items = new List<OrderItem>
                     {
                         new() { ProductId = productsBySlug["mens-casual-sneakers"].Id, Quantity = 2, Price = productsBySlug["mens-casual-sneakers"].Price },
-                        new() { ProductId = productsBySlug["noise-cancelling-headphones"].Id, Quantity = 2, Price = productsBySlug["noise-cancelling-headphones"].Price },
+                        new() { ProductId = productsBySlug["power-bank"].Id, Quantity = 2, Price = productsBySlug["power-bank"].Price },
                         new() { ProductId = productsBySlug["wireless-earbuds"].Id, Quantity = 1, Price = productsBySlug["wireless-earbuds"].Price }
                     }
                 },
@@ -422,7 +422,7 @@ public static class SeedData
                         new() { ProductId = productsBySlug["mens-casual-sneakers"].Id, Quantity = 3, Price = productsBySlug["mens-casual-sneakers"].Price },
                         new() { ProductId = productsBySlug["wireless-earbuds"].Id, Quantity = 2, Price = productsBySlug["wireless-earbuds"].Price },
                         new() { ProductId = productsBySlug["portable-bluetooth-speaker"].Id, Quantity = 1, Price = productsBySlug["portable-bluetooth-speaker"].Price },
-                        new() { ProductId = productsBySlug["usb-c-fast-charger"].Id, Quantity = 2, Price = productsBySlug["usb-c-fast-charger"].Price }
+                        new() { ProductId = productsBySlug["wireless-earbuds"].Id, Quantity = 2, Price = productsBySlug["wireless-earbuds"].Price }
                     }
                 },
                 new()
@@ -433,7 +433,7 @@ public static class SeedData
                     ShippingAddress = "56 Sunset Blvd, Los Angeles, CA",
                     Items = new List<OrderItem>
                     {
-                        new() { ProductId = productsBySlug["noise-cancelling-headphones"].Id, Quantity = 2, Price = productsBySlug["noise-cancelling-headphones"].Price },
+                        new() { ProductId = productsBySlug["power-bank"].Id, Quantity = 2, Price = productsBySlug["power-bank"].Price },
                         new() { ProductId = productsBySlug["mens-casual-sneakers"].Id, Quantity = 1, Price = productsBySlug["mens-casual-sneakers"].Price },
                         new() { ProductId = productsBySlug["smart-fitness-watch"].Id, Quantity = 1, Price = productsBySlug["smart-fitness-watch"].Price }
                     }

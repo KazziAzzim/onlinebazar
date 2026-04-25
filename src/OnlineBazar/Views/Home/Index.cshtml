@@ -193,7 +193,7 @@
                                 <img src="@(string.IsNullOrWhiteSpace(product.ImageUrl) ? Url.Content("~/images/carousel/fashion-1.svg") : product.ImageUrl)"
                                      class="card-img-top product-card-image featured-product-image"
                                      alt="@product.Name" />
-                                <span class="featured-product-discount">Best Seller</span>
+                                @* <span class="featured-product-discount">Best Seller</span> *@
                             </div>
                             <div class="card-body featured-product-body d-flex flex-column">
                                 <h3 class="h5 product-card-title featured-product-title">@product.Name</h3>
