@@ -169,6 +169,69 @@
     </div>
 </section>
 
+<section class="home-section">
+    <div class="home-section-header mb-3">
+        <h2 class="h4 mb-0">🔥 Trending Products</h2>
+        <a asp-controller="Products" asp-action="Index" class="btn btn-outline-dark btn-sm d-inline-flex align-items-center gap-2 home-section-link">
+            <span>View More</span>
+            <span aria-hidden="true">&rarr;</span>
+        </a>
+    </div>
+
+    <div id="trendingProductsCarousel" class="featured-products-carousel pb-2" data-autoplay-ms="4500" aria-label="Trending products slider">
+        <button type="button" class="featured-carousel-control featured-carousel-control-prev" data-direction="prev" aria-label="Previous trending products">
+            <span aria-hidden="true">&#10094;</span>
+        </button>
+
+        <div class="featured-products-viewport">
+            <div class="featured-products-row">
+                @foreach (var product in Model.TrendingProducts)
+                {
+                    <div class="featured-product-slide">
+                        <article class="card product-card featured-product-card h-100">
+                            <div class="featured-product-image-wrap">
+                                <img src="@(string.IsNullOrWhiteSpace(product.ImageUrl) ? Url.Content("~/images/carousel/fashion-1.svg") : product.ImageUrl)"
+                                     class="card-img-top product-card-image featured-product-image"
+                                     alt="@product.Name" />
+                                <span class="featured-product-discount">Best Seller</span>
+                            </div>
+                            <div class="card-body featured-product-body d-flex flex-column">
+                                <h3 class="h5 product-card-title featured-product-title">@product.Name</h3>
+                                <p class="featured-product-category mb-3">Sold: <strong>@product.TotalSold</strong> • Views: <strong>@product.ViewCount</strong></p>
+
+                                <div class="mt-auto mb-3">
+                                    <span class="featured-product-price">$@product.Price.ToString("0.00")</span>
+                                </div>
+
+                                @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
+                                {
+                                    <form asp-controller="Cart" asp-action="Add" method="post" class="d-grid">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="productId" value="@product.Id" />
+                                        <input type="hidden" name="quantity" value="1" />
+                                        <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                                        <button type="submit" class="btn featured-product-cta">ADD TO CART</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn featured-product-cta">VIEW PRODUCT</a>
+                                }
+                            </div>
+                        </article>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <button type="button" class="featured-carousel-control featured-carousel-control-next" data-direction="next" aria-label="Next trending products">
+            <span aria-hidden="true">&#10095;</span>
+        </button>
+
+        <div class="featured-carousel-dots" aria-hidden="true"></div>
+    </div>
+</section>
+
 @if (Model.Deals.Any())
 {
     <section class="home-section">
@@ -225,8 +288,8 @@
 @section Scripts {
     <script>
         (() => {
-            const carousel = document.getElementById("featuredProductsCarousel");
-            if (carousel) {
+            const carousels = document.querySelectorAll(".featured-products-carousel");
+            carousels.forEach(carousel => {
                 const track = carousel.querySelector(".featured-products-row");
                 const slides = Array.from(carousel.querySelectorAll(".featured-product-slide"));
                 const prevButton = carousel.querySelector('[data-direction="prev"]');
@@ -334,7 +397,7 @@
                     recalculate();
                     startAutoplay();
                 }
-            }
+            });
 
             const dealCards = Array.from(document.querySelectorAll("[data-deal-card]"));
             if (dealCards.length > 0) {

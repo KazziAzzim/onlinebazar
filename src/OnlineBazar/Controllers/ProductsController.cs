@@ -20,6 +20,7 @@ public class ProductsController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
+        await _productService.IncrementViewCountAsync(id);
         var product = await _productService.GetByIdAsync(id);
         if (product is null) return NotFound();
         return View(product);

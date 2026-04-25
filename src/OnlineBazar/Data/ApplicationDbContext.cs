@@ -32,20 +32,27 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         {
             entity.HasIndex(p => p.Slug).IsUnique();
             entity.Property(p => p.Price).HasColumnType("decimal(18,2)");
+            entity.Property(p => p.ViewCount).HasDefaultValue(0);
             entity.HasOne(p => p.Category)
                 .WithMany(c => c.Products)
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
+
         builder.Entity<Order>(entity =>
         {
             entity.Property(o => o.TotalAmount).HasColumnType("decimal(18,2)");
+            entity.Property(o => o.OrderDate).HasDefaultValueSql("GETUTCDATE()");
+            entity.HasOne(o => o.User)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         builder.Entity<OrderItem>(entity =>
         {
-            entity.Property(i => i.UnitPrice).HasColumnType("decimal(18,2)");
+            entity.Property(i => i.Price).HasColumnType("decimal(18,2)");
             entity.HasOne(i => i.Order)
                 .WithMany(o => o.Items)
                 .HasForeignKey(i => i.OrderId);
