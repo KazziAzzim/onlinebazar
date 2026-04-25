@@ -21,12 +21,21 @@ public class HomeController : Controller
     {
         var model = new HomeViewModel
         {
-            FeaturedProducts = await _productService.GetRandomProductsAsync(10),
+            FeaturedProducts = await _productService.GetFeaturedAsync(),
+            TrendingProducts = await _productService.GetTrendingProductsAsync(10),
             Banners = await _bannerService.GetActiveBannersAsync(),
             Deals = await _dealService.GetActiveDeals()
         };
 
         return View(model);
+    }
+
+    [HttpGet("/api/products/trending")]
+    public async Task<IActionResult> GetTrendingProducts(int count = 10)
+    {
+        var normalizedCount = Math.Clamp(count, 1, 20);
+        var products = await _productService.GetTrendingProductsAsync(normalizedCount);
+        return Ok(products);
     }
 
     public IActionResult About() => View();

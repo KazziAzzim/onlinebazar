@@ -11,4 +11,6 @@ public class ProductDto
     public bool IsFeatured { get; set; }
     public int CategoryId { get; set; }
     public string? ImageUrl { get; set; }
+    public int ViewCount { get; set; }
+    public int TotalSold { get; set; }
 }

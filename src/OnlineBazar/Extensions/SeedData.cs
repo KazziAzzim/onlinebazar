@@ -283,6 +283,172 @@ public static class SeedData
             await db.SaveChangesAsync();
         }
 
+
+        var allProducts = await db.Products.OrderBy(p => p.Id).ToListAsync();
+        if (allProducts.Count > 0 && allProducts.All(p => p.ViewCount == 0))
+        {
+            for (var i = 0; i < allProducts.Count; i++)
+            {
+                allProducts[i].ViewCount = 25 - i;
+            }
+
+            await db.SaveChangesAsync();
+        }
+
+        var sampleCustomers = new[]
+        {
+            new { FullName = "John Smith", Email = "john.smith@example.com", Phone = "+1-555-100-1001" },
+            new { FullName = "Emily Johnson", Email = "emily.johnson@example.com", Phone = "+1-555-100-1002" },
+            new { FullName = "Michael Brown", Email = "michael.brown@example.com", Phone = "+1-555-100-1003" },
+            new { FullName = "Olivia Davis", Email = "olivia.davis@example.com", Phone = "+1-555-100-1004" },
+            new { FullName = "William Wilson", Email = "william.wilson@example.com", Phone = "+1-555-100-1005" },
+            new { FullName = "Sophia Martinez", Email = "sophia.martinez@example.com", Phone = "+1-555-100-1006" },
+            new { FullName = "James Anderson", Email = "james.anderson@example.com", Phone = "+1-555-100-1007" }
+        };
+
+        var seededCustomerUsers = new List<ApplicationUser>();
+        foreach (var sample in sampleCustomers)
+        {
+            var existingCustomer = await userManager.FindByEmailAsync(sample.Email);
+            if (existingCustomer is null)
+            {
+                existingCustomer = new ApplicationUser
+                {
+                    Email = sample.Email,
+                    UserName = sample.Email,
+                    FullName = sample.FullName,
+                    PhoneNumber = sample.Phone,
+                    EmailConfirmed = true
+                };
+
+                var createResult = await userManager.CreateAsync(existingCustomer, "Customer123!");
+                if (createResult.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(existingCustomer, "Customer");
+                }
+            }
+
+            if (existingCustomer is not null)
+            {
+                var isCustomer = await userManager.IsInRoleAsync(existingCustomer, "Customer");
+                if (!isCustomer)
+                {
+                    await userManager.AddToRoleAsync(existingCustomer, "Customer");
+                }
+
+                seededCustomerUsers.Add(existingCustomer);
+            }
+        }
+
+        if (!db.Orders.Any() && seededCustomerUsers.Count >= 7)
+        {
+            var productsBySlug = await db.Products.ToDictionaryAsync(p => p.Slug, p => p);
+
+            var seededOrders = new List<Order>
+            {
+                new()
+                {
+                    UserId = seededCustomerUsers[0].Id,
+                    OrderDate = now.AddDays(-8),
+                    Status = "Delivered",
+                    ShippingAddress = "100 Main St, Austin, TX",
+                    Items = new List<OrderItem>
+                    {
+                        new() { ProductId = productsBySlug["noise-cancelling-headphones"].Id, Quantity = 3, Price = productsBySlug["noise-cancelling-headphones"].Price },
+                        new() { ProductId = productsBySlug["wireless-earbuds"].Id, Quantity = 2, Price = productsBySlug["wireless-earbuds"].Price },
+                        new() { ProductId = productsBySlug["usb-c-fast-charger"].Id, Quantity = 1, Price = productsBySlug["usb-c-fast-charger"].Price }
+                    }
+                },
+                new()
+                {
+                    UserId = seededCustomerUsers[1].Id,
+                    OrderDate = now.AddDays(-6),
+                    Status = "Delivered",
+                    ShippingAddress = "25 Oak Ave, Seattle, WA",
+                    Items = new List<OrderItem>
+                    {
+                        new() { ProductId = productsBySlug["noise-cancelling-headphones"].Id, Quantity = 2, Price = productsBySlug["noise-cancelling-headphones"].Price },
+                        new() { ProductId = productsBySlug["portable-bluetooth-speaker"].Id, Quantity = 2, Price = productsBySlug["portable-bluetooth-speaker"].Price },
+                        new() { ProductId = productsBySlug["smart-fitness-watch"].Id, Quantity = 1, Price = productsBySlug["smart-fitness-watch"].Price }
+                    }
+                },
+                new()
+                {
+                    UserId = seededCustomerUsers[2].Id,
+                    OrderDate = now.AddDays(-5),
+                    Status = "Delivered",
+                    ShippingAddress = "42 Pine Dr, Chicago, IL",
+                    Items = new List<OrderItem>
+                    {
+                        new() { ProductId = productsBySlug["wireless-earbuds"].Id, Quantity = 4, Price = productsBySlug["wireless-earbuds"].Price },
+                        new() { ProductId = productsBySlug["noise-cancelling-headphones"].Id, Quantity = 1, Price = productsBySlug["noise-cancelling-headphones"].Price },
+                        new() { ProductId = productsBySlug["smart-fitness-watch"].Id, Quantity = 2, Price = productsBySlug["smart-fitness-watch"].Price }
+                    }
+                },
+                new()
+                {
+                    UserId = seededCustomerUsers[3].Id,
+                    OrderDate = now.AddDays(-4),
+                    Status = "Delivered",
+                    ShippingAddress = "87 Cedar Rd, Denver, CO",
+                    Items = new List<OrderItem>
+                    {
+                        new() { ProductId = productsBySlug["mens-casual-sneakers"].Id, Quantity = 5, Price = productsBySlug["mens-casual-sneakers"].Price },
+                        new() { ProductId = productsBySlug["womens-running-shoes"].Id, Quantity = 2, Price = productsBySlug["womens-running-shoes"].Price },
+                        new() { ProductId = productsBySlug["cotton-crew-neck-tshirt"].Id, Quantity = 3, Price = productsBySlug["cotton-crew-neck-tshirt"].Price }
+                    }
+                },
+                new()
+                {
+                    UserId = seededCustomerUsers[4].Id,
+                    OrderDate = now.AddDays(-3),
+                    Status = "Delivered",
+                    ShippingAddress = "19 Lake St, Miami, FL",
+                    Items = new List<OrderItem>
+                    {
+                        new() { ProductId = productsBySlug["mens-casual-sneakers"].Id, Quantity = 2, Price = productsBySlug["mens-casual-sneakers"].Price },
+                        new() { ProductId = productsBySlug["noise-cancelling-headphones"].Id, Quantity = 2, Price = productsBySlug["noise-cancelling-headphones"].Price },
+                        new() { ProductId = productsBySlug["wireless-earbuds"].Id, Quantity = 1, Price = productsBySlug["wireless-earbuds"].Price }
+                    }
+                },
+                new()
+                {
+                    UserId = seededCustomerUsers[5].Id,
+                    OrderDate = now.AddDays(-2),
+                    Status = "Delivered",
+                    ShippingAddress = "210 Market St, Phoenix, AZ",
+                    Items = new List<OrderItem>
+                    {
+                        new() { ProductId = productsBySlug["mens-casual-sneakers"].Id, Quantity = 3, Price = productsBySlug["mens-casual-sneakers"].Price },
+                        new() { ProductId = productsBySlug["wireless-earbuds"].Id, Quantity = 2, Price = productsBySlug["wireless-earbuds"].Price },
+                        new() { ProductId = productsBySlug["portable-bluetooth-speaker"].Id, Quantity = 1, Price = productsBySlug["portable-bluetooth-speaker"].Price },
+                        new() { ProductId = productsBySlug["usb-c-fast-charger"].Id, Quantity = 2, Price = productsBySlug["usb-c-fast-charger"].Price }
+                    }
+                },
+                new()
+                {
+                    UserId = seededCustomerUsers[6].Id,
+                    OrderDate = now.AddDays(-1),
+                    Status = "Delivered",
+                    ShippingAddress = "56 Sunset Blvd, Los Angeles, CA",
+                    Items = new List<OrderItem>
+                    {
+                        new() { ProductId = productsBySlug["noise-cancelling-headphones"].Id, Quantity = 2, Price = productsBySlug["noise-cancelling-headphones"].Price },
+                        new() { ProductId = productsBySlug["mens-casual-sneakers"].Id, Quantity = 1, Price = productsBySlug["mens-casual-sneakers"].Price },
+                        new() { ProductId = productsBySlug["smart-fitness-watch"].Id, Quantity = 1, Price = productsBySlug["smart-fitness-watch"].Price }
+                    }
+                }
+            };
+
+            foreach (var order in seededOrders)
+            {
+                order.TotalAmount = order.Items.Sum(item => item.Price * item.Quantity);
+            }
+
+            db.Orders.AddRange(seededOrders);
+            await db.SaveChangesAsync();
+        }
+
         if (!db.Testimonials.Any())
         {
             db.Testimonials.AddRange(
